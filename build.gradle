@@ -1,12 +1,13 @@
 plugins {
 	id 'org.springframework.boot' version '2.7.2'
-	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'idea'
 }
 
 group = 'org.philosophy'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -20,14 +21,27 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'javax.validation:validation-api:2.0.1.Final'
+	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation 'org.flywaydb:flyway-core'
-	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+	compileOnly 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.assertj:assertj-core:3.23.1'
+	implementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+	implementation 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+	implementation 'org.mockito:mockito-junit-jupiter:4.6.1'
+	implementation 'org.mockito:mockito-core:4.6.1'
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
 }
 
 tasks.named('test') {

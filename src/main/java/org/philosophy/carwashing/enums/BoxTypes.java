@@ -1,5 +1,13 @@
 package org.philosophy.carwashing.enums;
 
+/**
+ * Типы предлагаемых услуг по мойке машин
+ */
 public enum BoxTypes {
-    STANDARD, QUICK, SUPER_QUICK, EXTRA_QUICK
+    /**
+     *  Обычная (ручная мойка),
+     *  Быстрая (полуавтоматическая мойка),
+     *  Супер-быстрая (автоматическая мойка),
+     */
+    STANDARD, QUICK, SUPER_QUICK
 }

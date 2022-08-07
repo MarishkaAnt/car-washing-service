@@ -27,12 +27,13 @@ dependencies {
 	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
-	implementation 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 
 
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
 
 	implementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.assertj:assertj-core:3.23.1'

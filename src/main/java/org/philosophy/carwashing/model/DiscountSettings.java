@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class DiscountConstrainSettings {
+public class DiscountSettings {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,6 +7,7 @@ import org.philosophy.carwashing.enums.BookingStatuses;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -31,6 +32,9 @@ public class Booking {
     private Request request;
 
     private BigDecimal totalCost;
+    private LocalDateTime datetimeFrom;
+    private LocalDateTime datetimeTo;
+    private Duration duration;
 
     @Enumerated(EnumType.STRING)
     private BookingStatuses status;

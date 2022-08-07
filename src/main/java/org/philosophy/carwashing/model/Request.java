@@ -5,6 +5,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -36,7 +37,11 @@ public class Request {
     @Fetch(FetchMode.JOIN)
     private User user;
 
-    LocalDateTime datetimeFrom;
-    LocalDateTime datetimeTo;
+    private LocalDateTime datetimeFrom;
+    private LocalDateTime datetimeTo;
+
+    private LocalDateTime responseDatetimeFrom;
+    private LocalDateTime responseDatetimeTo;
+    private Duration duration;
 
 }

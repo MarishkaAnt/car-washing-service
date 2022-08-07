@@ -1,29 +1,31 @@
 package org.philosophy.carwashing.model;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @Builder
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends Discountable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String username;
+    private String first_name;
+    private String last_name;
+    private String email;
     private String password;
-    private Boolean hasPersonDiscount;
     private Boolean isActive;
-    private BigDecimal discountAmount;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    private Role role;
 }

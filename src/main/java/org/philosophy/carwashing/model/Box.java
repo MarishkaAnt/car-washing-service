@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Box extends AbstractDiscountable{
+public class Box extends Discountable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,32 +1,30 @@
 package org.philosophy.carwashing.model;
 
 import lombok.*;
-import org.philosophy.carwashing.enums.BoxTypes;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.math.BigDecimal;
+import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
+@Table(name = "boxes")
 @Getter
 @Setter
 @Builder
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Box {
+public class Box extends AbstractDiscountable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private BoxTypes type;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    private BoxType boxType;
     private LocalTime openTime;
     private LocalTime closeTime;
-    private Boolean hasDiscount;
-    private BigDecimal discountAmount;
-    private BigDecimal speedCoefficient;
 }

@@ -4,19 +4,19 @@ import lombok.*;
 import org.philosophy.carwashing.dto.DiscountableDto;
 
 /**
- * Dto для вывода в списки
+ * Dto для вывода пользователя на фронтенд
  */
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserFindAllResponseDto extends DiscountableDto {
+public class UserViewResponseDto extends DiscountableDto {
 
     private Integer id;
     private String firstName;
     private String lastName;
     private Boolean isActive;
-    private Integer roleId;
+    private String role;
 
 }

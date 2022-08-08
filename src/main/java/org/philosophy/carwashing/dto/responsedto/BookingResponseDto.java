@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingAfterPaymentResponseDto {
+public class BookingResponseDto {
 
     private Integer id;
     private Integer requestId;

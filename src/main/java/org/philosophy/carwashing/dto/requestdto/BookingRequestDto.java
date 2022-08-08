@@ -17,7 +17,7 @@ public class BookingRequestDto {
 
     private Integer requestId;
     private BigDecimal totalCost;
-    private BookingStatuses status;
+    private String status;
     private Boolean isPaid;
 
 }

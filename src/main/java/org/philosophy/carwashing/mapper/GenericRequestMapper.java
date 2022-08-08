@@ -1,7 +1,6 @@
 package org.philosophy.carwashing.mapper;
 
-public interface GenericEntityMapper <E, D>{
+public interface GenericRequestMapper<E, D>{
 
     E toEntity(D d);
-    D toDto(E e);
 }

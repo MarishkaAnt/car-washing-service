@@ -3,8 +3,10 @@ package org.philosophy.carwashing.model;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.philosophy.carwashing.enums.Roles;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,8 +26,10 @@ public class User extends Discountable {
     private String email;
     private String password;
     private Boolean isActive;
+    @Enumerated(EnumType.STRING)
+    private Roles role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
-    private Role role;
+    List<Booking> bookings;
 }

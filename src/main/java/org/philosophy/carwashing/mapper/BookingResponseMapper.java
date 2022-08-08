@@ -9,7 +9,7 @@ import org.philosophy.carwashing.model.Booking;
 @Mapper(
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = "spring")
-public interface BookingAfterPaymentResponseMapper extends
+public interface BookingResponseMapper extends
         GenericEntityMapper<Booking, BookingAfterPaymentResponseDto>  {
 
     @Mapping(target="request.id", source="requestId")

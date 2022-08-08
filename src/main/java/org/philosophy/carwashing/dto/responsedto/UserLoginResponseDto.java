@@ -2,7 +2,6 @@ package org.philosophy.carwashing.dto.responsedto;
 
 import lombok.*;
 import org.philosophy.carwashing.dto.DiscountableDto;
-import org.philosophy.carwashing.model.Role;
 
 /**
  *  Dto - ответ пользователю после регистрации

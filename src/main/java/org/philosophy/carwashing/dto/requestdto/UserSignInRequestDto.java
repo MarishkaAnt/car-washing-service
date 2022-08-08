@@ -1,6 +1,7 @@
 package org.philosophy.carwashing.dto.requestdto;
 
 import lombok.*;
+import org.philosophy.carwashing.dto.DiscountableDto;
 
 /**
  * Dto - регистрация пользователя в системе
@@ -10,7 +11,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSignInRequestDto {
+public class UserSignInRequestDto extends DiscountableDto {
 
     private String firstName;
     private String lastName;

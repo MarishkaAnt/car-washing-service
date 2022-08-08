@@ -2,7 +2,6 @@ package org.philosophy.carwashing.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
-import org.philosophy.carwashing.dto.requestdto.DiscountSettingsRequestDto;
 import org.philosophy.carwashing.dto.responsedto.DiscountSettingsResponseDto;
 import org.philosophy.carwashing.model.DiscountSettings;
 

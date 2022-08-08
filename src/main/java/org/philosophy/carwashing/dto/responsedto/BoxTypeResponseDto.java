@@ -10,7 +10,7 @@ import lombok.*;
 public class BoxTypeResponseDto {
 
     private Integer id;
-    private Integer type_id;
+    private Integer typeId;
     private Double speedcoefficient;
 
 }

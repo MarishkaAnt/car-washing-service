@@ -1,7 +1,7 @@
 package org.philosophy.carwashing.dto.responsedto;
 
 import lombok.*;
-import org.philosophy.carwashing.model.BoxType;
+import org.philosophy.carwashing.dto.DiscountableDto;
 
 import java.time.LocalTime;
 
@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoxResponseDto {
+public class BoxResponseDto extends DiscountableDto {
 
     private Integer id;
     private Integer boxTypeId;

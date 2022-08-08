@@ -10,7 +10,7 @@ import org.philosophy.carwashing.enums.BoxTypes;
 @NoArgsConstructor
 public class BoxTypeRequestDto {
 
-    private Integer type_id;
+    private Integer typeId;
     private Double speedcoefficient;
 
 }

@@ -13,7 +13,7 @@ import java.time.LocalTime;
 public class BoxResponseDto {
 
     private Integer id;
-    private BoxType boxType;
+    private Integer boxTypeId;
     private LocalTime openTime;
     private LocalTime closeTime;
 

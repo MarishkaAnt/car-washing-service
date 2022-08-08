@@ -1,6 +1,7 @@
 package org.philosophy.carwashing.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.philosophy.carwashing.dto.requestdto.BoxRequestDto;
 import org.philosophy.carwashing.model.Box;
@@ -11,7 +12,9 @@ import org.philosophy.carwashing.model.Box;
 public interface BoxRequestMapper extends
         GenericEntityMapper<Box, BoxRequestDto>  {
 
-    Box toEntity(BoxRequestDto boxRequestDto);
+    @Mapping(target="boxType.id", source="boxTypeId")
+    Box toEntity(BoxRequestDto dto);
 
+    @Mapping(target="boxTypeId", source="boxType.id")
     BoxRequestDto toDto(Box box);
 }

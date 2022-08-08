@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class BoxRequestDto {
 
-    private BoxType boxType;
+    private Integer boxTypeId;
     private LocalTime openTime;
     private LocalTime closeTime;
 

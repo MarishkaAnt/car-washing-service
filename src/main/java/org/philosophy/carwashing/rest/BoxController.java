@@ -1,26 +1,43 @@
 package org.philosophy.carwashing.rest;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.philosophy.carwashing.model.Box;
-import org.philosophy.carwashing.service.BoxService;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
+import org.philosophy.carwashing.dto.requestdto.BoxRequestDto;
+import org.philosophy.carwashing.dto.responsedto.BoxResponseDto;
+import org.philosophy.carwashing.service.BoxServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/boxes")
 public class BoxController {
 
-    private final BoxService boxService;
+    private final BoxServiceImpl boxServiceImpl;
 
-    @GetMapping("")
-    public ResponseEntity<List<Box>> getAll(){
-        List<Box> boxes = boxService.findAll();
-        return new ResponseEntity<>(boxes, HttpStatus.OK);
+    @GetMapping
+    @Tag(name = "Выводит все имеющиеся в БД боксы")
+    public ResponseEntity<Page<BoxResponseDto>> getAllPageable(Pageable pageable){
+        Page<BoxResponseDto> dtos = boxServiceImpl.findAll(pageable);
+        return ResponseEntity.ok().body(dtos);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BoxResponseDto> getById(@PathVariable Integer id){
+        BoxResponseDto responseDto = boxServiceImpl.findById(id);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @PostMapping
+    public ResponseEntity<BoxResponseDto> create(@RequestBody BoxRequestDto request) {
+        log.debug("post controller {}", request);
+        BoxResponseDto responseDto = boxServiceImpl.create(request);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
 }

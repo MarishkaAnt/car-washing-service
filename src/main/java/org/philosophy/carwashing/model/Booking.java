@@ -39,6 +39,6 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatuses status;
     private Boolean isPaid;
-    private LocalDateTime payment_time;
+    private LocalDateTime paymentTime;
 
 }

@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class BookingRequestDto {
 
-    private Integer request_id;
+    private Integer requestId;
     private BigDecimal totalCost;
     private BookingStatuses status;
     private Boolean isPaid;

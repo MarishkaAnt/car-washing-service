@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 public class BookingAfterPaymentResponseDto {
 
     private Integer id;
-    private Integer request_id;
+    private Integer requestId;
     private BigDecimal totalCost;
     private BookingStatuses status;
     private Boolean isPaid;
-    private LocalDateTime payment_time;
+    private LocalDateTime paymentTime;
 
 }

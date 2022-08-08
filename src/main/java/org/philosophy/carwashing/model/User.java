@@ -26,6 +26,7 @@ public class User extends Discountable {
     private String email;
     private String password;
     private Boolean isActive;
+
     @Enumerated(EnumType.STRING)
     private Roles role;
 

@@ -15,9 +15,8 @@ import org.philosophy.carwashing.model.Role;
 public class UserLoginResponseDto extends DiscountableDto {
 
     private Integer id;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private Boolean isActive;
-    private Role role;
 
 }

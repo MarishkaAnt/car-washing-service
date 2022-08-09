@@ -14,6 +14,5 @@ public interface BookingResponseMapper extends
         GenericResponseMapper<Booking, BookingResponseDto> {
 
     @Mapping(target="requestId", source="request.id")
-    @Mapping(target="boxId", source="box.id")
     BookingResponseDto toDto(Booking booking);
 }

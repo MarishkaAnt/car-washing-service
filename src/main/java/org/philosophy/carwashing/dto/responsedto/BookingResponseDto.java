@@ -2,6 +2,7 @@ package org.philosophy.carwashing.dto.responsedto;
 
 import lombok.*;
 import org.philosophy.carwashing.enums.BookingStatuses;
+import org.philosophy.carwashing.model.Box;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -23,5 +24,7 @@ public class BookingResponseDto {
     private LocalDateTime dateTimeFrom;
     private LocalDateTime dateTimeTo;
     private Duration duration;
+    private Integer userId;
+    private Box box;
 
 }

@@ -31,7 +31,7 @@ public class User extends Discountable {
     @Enumerated(EnumType.STRING)
     private Roles role;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     @Fetch(FetchMode.JOIN)
     List<Booking> bookings;
 }

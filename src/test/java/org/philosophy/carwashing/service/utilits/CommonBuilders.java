@@ -14,7 +14,6 @@ import static org.philosophy.carwashing.service.utilits.StringCommonConstants.*;
 public class CommonBuilders {
     public static RequestRequestDto getCorrectInputDto(){
         RequestRequestDto dto = new RequestRequestDto();
-        dto.setBoxId(CORRECT_ID_EQUALS_1);
         dto.setWashTypeId(CORRECT_ID_EQUALS_1);
         dto.setUserId(CORRECT_ID_EQUALS_1);
         dto.setDatetimeFrom(LocalDateTime.parse("2022-08-09T09:00:00"));
@@ -25,11 +24,8 @@ public class CommonBuilders {
     public static RequestResponseDto getCorrectOutputDto(){
         RequestResponseDto dto = new RequestResponseDto();
         dto.setId(CORRECT_ID_EQUALS_1);
-        dto.setBoxId(CORRECT_ID_EQUALS_1);
         dto.setWashTypeId(CORRECT_ID_EQUALS_1);
         dto.setUserId(CORRECT_ID_EQUALS_1);
-        dto.setResponseDatetimeFrom(LocalDateTime.parse("2022-08-09T09:00:00"));
-        dto.setResponseDatetimeTo(LocalDateTime.parse("2022-08-09T09:15:00"));
         return dto;
     }
 
@@ -51,7 +47,6 @@ public class CommonBuilders {
     public static Request getCorrectRequestAfterSaving(){
         return Request.builder()
                 .id(CORRECT_ID_EQUALS_1)
-                .box(getCorrectBoxSpeedStandard())
                 .washType(getCorrectWashTypeLight())
                 .userId(CORRECT_ID_EQUALS_1)
                 .datetimeFrom(CORRECT_REQUEST_START_DATE_TIME)

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/boxes")
+@RequestMapping("api/v1/boxes")
 public class BoxController {
 
     private final BoxServiceImpl boxServiceImpl;

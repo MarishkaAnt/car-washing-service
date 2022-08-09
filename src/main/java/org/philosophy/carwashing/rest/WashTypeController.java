@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/wash-types")
+@RequestMapping("api/v1/wash-types")
 public class WashTypeController {
 
     private final WashTypeServiceImpl washTypeService;

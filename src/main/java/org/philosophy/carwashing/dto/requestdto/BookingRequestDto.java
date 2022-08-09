@@ -14,6 +14,5 @@ import lombok.*;
 public class BookingRequestDto {
 
     private Integer requestId;
-    private Boolean isPaid;
-
+    private Integer boxId;
 }

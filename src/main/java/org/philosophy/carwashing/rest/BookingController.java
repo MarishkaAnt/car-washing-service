@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/bookings")
@@ -42,6 +44,13 @@ public class BookingController {
     public ResponseEntity<?> deleteById(@PathVariable Integer id){
         bookingServiceImpl.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    //@Secured(ROLE_ADMIN)
+    public ResponseEntity<BookingResponseDto> update(@RequestBody BookingRequestDto request, @PathVariable Integer id) {
+        BookingResponseDto responseDto = bookingServiceImpl.update(id, request);
+        return ResponseEntity.ok().body(responseDto);
     }
 
 }

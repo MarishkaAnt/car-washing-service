@@ -30,6 +30,11 @@ public class Booking {
     @OneToOne()
     @Fetch(FetchMode.JOIN)
     private Request request;
+
+    @OneToOne()
+    @Fetch(FetchMode.JOIN)
+    private Box box;
+
     private Integer userId;
 
     private Double totalCost;

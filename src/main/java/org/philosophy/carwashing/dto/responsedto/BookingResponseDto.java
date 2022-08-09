@@ -3,6 +3,7 @@ package org.philosophy.carwashing.dto.responsedto;
 import lombok.*;
 import org.philosophy.carwashing.enums.BookingStatuses;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,5 +20,8 @@ public class BookingResponseDto {
     private BookingStatuses status;
     private Boolean isPaid;
     private LocalDateTime paymentTime;
+    private LocalDateTime dateTimeFrom;
+    private LocalDateTime dateTimeTo;
+    private Duration duration;
 
 }

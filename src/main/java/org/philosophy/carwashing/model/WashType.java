@@ -2,15 +2,12 @@ package org.philosophy.carwashing.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.math.BigDecimal;
 import java.time.Duration;
 
 @Entity
+@Table(name = "wash_types")
 @Getter
 @Setter
 @Builder
@@ -32,5 +29,5 @@ public class WashType extends Discountable {
     private Duration duration;
 
     @NotBlank
-    private BigDecimal cost;
+    private Double cost;
 }

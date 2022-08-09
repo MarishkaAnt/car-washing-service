@@ -6,7 +6,6 @@ import org.hibernate.annotations.FetchMode;
 import org.philosophy.carwashing.enums.BookingStatuses;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -31,7 +30,13 @@ public class Booking {
     @Fetch(FetchMode.JOIN)
     private Request request;
 
-    private BigDecimal totalCost;
+/*
+    @OneToOne(cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+*/
+    private Integer userId;
+
+    private Double totalCost;
     private LocalDateTime datetimeFrom;
     private LocalDateTime datetimeTo;
     private Duration duration;

@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.math.BigDecimal;
 
 @Slf4j
 @Service
@@ -41,7 +40,7 @@ public class BoxServiceImpl implements GenericService<Integer, BoxResponseDto, B
                 .orElseThrow(() -> new EntityNotFoundException("Бокс с таким Id не найден"));
         box.setBoxType(boxType);
         box.setHasDiscount(false);
-        box.setDiscountAmount(BigDecimal.ZERO);
+        box.setDiscountAmount(0.0);
         Box saved = boxRepository.save(box);
         return boxResponseMapper.toDto(saved);
     }

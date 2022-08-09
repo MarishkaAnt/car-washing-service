@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.MappedSuperclass;
-import java.math.BigDecimal;
 
 @MappedSuperclass
 @Setter
@@ -12,5 +11,5 @@ import java.math.BigDecimal;
 public abstract class Discountable {
 
     protected Boolean hasDiscount;
-    protected BigDecimal discountAmount;
+    protected Double discountAmount;
 }

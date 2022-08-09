@@ -2,8 +2,6 @@ package org.philosophy.carwashing.dto;
 
 import lombok.*;
 
-import java.math.BigDecimal;
-
 /**
  *  Dto - абстрактный класс для добавления в дто полей скидки
  */
@@ -15,6 +13,6 @@ import java.math.BigDecimal;
 public abstract class DiscountableDto {
 
     protected Boolean hasDiscount;
-    protected BigDecimal discountAmount;
+    protected Double discountAmount;
 
 }

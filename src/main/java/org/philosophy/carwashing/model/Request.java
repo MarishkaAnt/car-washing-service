@@ -33,9 +33,7 @@ public class Request {
     @Fetch(FetchMode.JOIN)
     private WashType washType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @Fetch(FetchMode.JOIN)
-    private User user;
+    private Integer userId;
 
     private LocalDateTime datetimeFrom;
     private LocalDateTime datetimeTo;

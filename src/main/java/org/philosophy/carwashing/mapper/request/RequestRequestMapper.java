@@ -15,7 +15,7 @@ public interface RequestRequestMapper extends
 
     @Mapping(target = "box.id", source = "boxId")
     @Mapping(target = "washType.id", source = "washTypeId")
-    @Mapping(target = "user.id", source = "userId")
+    //@Mapping(target = "user.id", source = "userId")
     Request toEntity(RequestRequestDto requestDto);
 
 }

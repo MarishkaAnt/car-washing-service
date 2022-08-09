@@ -15,6 +15,6 @@ public interface RequestResponseMapper extends
 
     @Mapping(target = "boxId", source = "box.id")
     @Mapping(target = "washTypeId", source = "washType.id")
-    @Mapping(target = "userId", source = "user.id")
+    //@Mapping(target = "userId", source = "user.id")
     RequestResponseDto toDto(Request request);
 }

@@ -1,4 +1,4 @@
-package org.philosophy.carwashing.service;
+package org.philosophy.carwashing.service.util;
 
 import lombok.Getter;
 import lombok.Setter;

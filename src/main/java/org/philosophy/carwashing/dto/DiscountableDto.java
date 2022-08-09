@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public abstract class DiscountableDto {
 
     protected Boolean hasDiscount;

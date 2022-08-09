@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Integer> {
 
-    List<Booking> findAllByDatetimeFromGreaterThanAndDatetimeToLessThanAndStatusNotIn(
-            LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo, List<BookingStatuses> status);
+    List<Booking> findAllByDatetimeFromGreaterThanAndDatetimeToLessThanAndStatusNotInOrderByDatetimeFrom(
+            LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo, List<BookingStatuses> statuses);
 }

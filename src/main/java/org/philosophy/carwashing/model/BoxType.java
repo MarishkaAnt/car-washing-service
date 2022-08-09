@@ -1,8 +1,6 @@
 package org.philosophy.carwashing.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.philosophy.carwashing.enums.BoxTypes;
 
 import javax.persistence.*;
@@ -11,7 +9,9 @@ import javax.persistence.*;
 @Table(name = "box_types")
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BoxType {
 
     @Id

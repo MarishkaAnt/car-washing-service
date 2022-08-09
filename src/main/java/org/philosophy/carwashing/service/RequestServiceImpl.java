@@ -27,7 +27,6 @@ public class RequestServiceImpl implements GenericService<Integer,
     private final RequestRepository requestRepository;
     private final BookingRepository bookingRepository;
     private final BoxRepository boxRepository;
-    private final UserRepository userRepository;
     private final WashTypeRepository washTypeRepository;
     private final RequestRequestMapper requestRequestMapper;
     private final RequestResponseMapper requestResponseMapper;
@@ -42,10 +41,12 @@ public class RequestServiceImpl implements GenericService<Integer,
                 () -> new EntityNotFoundException("Бокс не найден по id"));
         WashType washType = washTypeRepository.findById(dto.getWashTypeId()).orElseThrow(
                 () -> new EntityNotFoundException("услуга не найдена по id"));
-        System.out.println(washType);
-        Offer offer = generateOffer(request);
         request.setBox(box);
         request.setWashType(washType);
+        Offer offer = generateOffer(request);
+        if(offer.getDuration() == null || offer.getTimeFrom() == null || offer.getTimeTo() == null){
+            throw new EntityNotFoundException("По вашему запросу ничего не найдено, измените параметры поиска");
+        }
         request.setResponseDatetimeFrom(offer.timeFrom);
         request.setResponseDatetimeTo(offer.timeTo);
         request.setDuration(offer.duration);
@@ -68,7 +69,7 @@ public class RequestServiceImpl implements GenericService<Integer,
         return null;
     }
 
-    private Offer generateOffer(Request request){
+    public Offer generateOffer(Request request){
         Offer offer = new Offer();
         LocalDateTime datetimeFrom = request.getDatetimeFrom();
         LocalDateTime datetimeTo = request.getDatetimeTo();
@@ -78,18 +79,22 @@ public class RequestServiceImpl implements GenericService<Integer,
                 (long) (washTypeDuration.toMillis() * speedcoefficient),
                 ChronoUnit.MILLIS);
         List<BookingStatuses> statuses = List.of(BookingStatuses.CANCELLED, BookingStatuses.DELETED);
-        List<Booking> bookings = bookingRepository.findAllByDatetimeFromGreaterThanAndDatetimeToLessThanAndStatusNotIn(
+        List<Booking> bookings = bookingRepository.findAllByDatetimeFromGreaterThanAndDatetimeToLessThanAndStatusNotInOrderByDatetimeFrom(
                 datetimeFrom, datetimeTo, statuses
         );
         LocalDateTime start = datetimeFrom;
-        for (Booking b: bookings) {
-            Duration checkedDuration = Duration.between(b.getDatetimeFrom(), start);
-            if(checkedDuration.compareTo(washTypeDuration) >= 0){
+        LocalDateTime end = datetimeTo;
+        for (int i = 0; i < bookings.size(); i++) {
+            Booking b = bookings.get(i);
+            Duration checkedDuration = Duration.between(start, b.getDatetimeFrom());
+            if (checkedDuration.compareTo(washTypeDuration) >= 0) {
                 offer.setDuration(washTypeDuration);
                 offer.setTimeFrom(start);
                 offer.setTimeTo(start.plus(washTypeDuration));
                 break;
-            } else {
+            } else if(i == (bookings.size() - 1)){
+                    checkedDuration = Duration.between(b.getDatetimeTo(), end);
+            }else {
                 start = b.getDatetimeTo();
             }
         }

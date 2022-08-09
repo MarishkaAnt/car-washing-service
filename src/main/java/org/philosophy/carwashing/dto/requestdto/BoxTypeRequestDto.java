@@ -8,6 +8,7 @@ import org.philosophy.carwashing.enums.BoxTypes;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class BoxTypeRequestDto {
 
     private Integer typeId;

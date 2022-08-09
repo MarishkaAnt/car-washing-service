@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class BoxRequestDto extends DiscountableDto {
 
     private Integer boxTypeId;

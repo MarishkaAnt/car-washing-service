@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
  * Сущность брони
  */
 @Entity
+@Table(name = "bookings")
 @Getter
 @Setter
 @Builder

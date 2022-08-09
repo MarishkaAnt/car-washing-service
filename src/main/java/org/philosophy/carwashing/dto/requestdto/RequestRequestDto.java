@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class RequestRequestDto {
 
     private Integer boxId;

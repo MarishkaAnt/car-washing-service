@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
  * Сущность запроса пользователя на создание брони
  */
 @Entity
+@Table(name = "request")
 @Getter
 @Setter
 @Builder

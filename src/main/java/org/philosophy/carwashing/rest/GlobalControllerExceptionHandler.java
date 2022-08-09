@@ -13,9 +13,9 @@ import javax.persistence.EntityNotFoundException;
 class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({EntityNotFoundException.class, EmptyResultDataAccessException.class})
-    public ResponseEntity<String> handleEntityNotFound() {
-    return ResponseEntity.badRequest().body("Сущности с таким id нет в базе данных");
+    @ExceptionHandler(value = {EntityNotFoundException.class, EmptyResultDataAccessException.class})
+    public ResponseEntity<String> handleEntityNotFound(Exception e) {
+    return ResponseEntity.badRequest().body("Сущность не найдена. " + e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

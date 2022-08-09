@@ -11,6 +11,7 @@ import org.philosophy.carwashing.dto.DiscountableDto;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class UserViewResponseDto extends DiscountableDto {
 
     private Integer id;

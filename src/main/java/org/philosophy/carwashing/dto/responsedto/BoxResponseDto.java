@@ -10,6 +10,7 @@ import java.time.LocalTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class BoxResponseDto extends DiscountableDto {
 
     private Integer id;

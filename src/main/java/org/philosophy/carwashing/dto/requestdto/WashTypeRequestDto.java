@@ -9,6 +9,7 @@ import java.time.Duration;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class WashTypeRequestDto {
 
     private String name;

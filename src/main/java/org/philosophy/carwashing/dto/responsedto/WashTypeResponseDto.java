@@ -9,6 +9,7 @@ import java.time.Duration;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class WashTypeResponseDto {
 
     private Integer id;

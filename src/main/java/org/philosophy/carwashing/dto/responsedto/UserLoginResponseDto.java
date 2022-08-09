@@ -15,6 +15,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class UserLoginResponseDto extends DiscountableDto {
 
     private Integer id;

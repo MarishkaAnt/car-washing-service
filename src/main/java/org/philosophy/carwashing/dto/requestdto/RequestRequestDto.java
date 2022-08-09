@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class RequestRequestDto {
 
-    private Integer boxId;
     private Integer washTypeId;
     private Integer userId;
     private LocalDateTime datetimeFrom;

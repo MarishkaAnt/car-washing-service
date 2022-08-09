@@ -22,7 +22,7 @@ public class Box extends Discountable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @Fetch(FetchMode.JOIN)
     private BoxType boxType;
     private LocalTime openTime;

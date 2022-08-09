@@ -13,6 +13,7 @@ import org.philosophy.carwashing.validator.ParameterValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -26,6 +27,8 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
     private final BookingResponseMapper bookingResponseMapper;
     private final ParameterValidator<BookingRequestDto> validator;
 
+    @Override
+    @Transactional
     public BookingResponseDto create(BookingRequestDto dto) {
         validator.validateDtoNotNull(dto);
         Booking booking = bookingRequestMapper.toEntity(dto);
@@ -42,22 +45,35 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
 
     }
 
-
-    public void deleteById(Integer integer) {
-
+    @Override
+    @Transactional
+    public void deleteById(Integer id) {
+        validator.validateIdIsNullOrNegative(id);
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        if(booking.getRequest() != null) {
+            throw new IllegalArgumentException("Удаление невозможно, сущность связана с другими сущностями ");
+        }
+        bookingRepository.deleteById(id);
     }
 
-    public BookingResponseDto findById(Integer integer) {
-        return null;
+    @Override
+    public BookingResponseDto findById(Integer id) {
+        validator.validateIdIsNullOrNegative(id);
+        return bookingRepository.findById(id)
+                .map(bookingResponseMapper::toDto)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
+    @Override
     public Page<BookingResponseDto> findAll(Pageable pageable) {
-        return null;
+        return bookingRepository.findAll(pageable)
+                .map(bookingResponseMapper::toDto);
     }
 
     private Double getTotalCost(Request request) {
         Double totalCost;
-        if(request.getWashType().getDiscountAmount() >= 1.0){
+        if (request.getWashType().getDiscountAmount() >= 1.0) {
             totalCost = request.getWashType().getCost() / 100 * request.getWashType().getDiscountAmount();
         } else {
             totalCost = request.getWashType().getCost();
@@ -66,4 +82,45 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
     }
 
 }
+
+/*
+        Offer offer = generateOffer(request);
+        if(offer.getDuration() == null || offer.getTimeFrom() == null || offer.getTimeTo() == null){
+            throw new EntityNotFoundException("По вашему запросу ничего не найдено, измените параметры поиска");
+        }
+*/
+/*
+    public Offer generateOffer(Request request){
+        Offer offer = new Offer();
+        LocalDateTime datetimeFrom = request.getDatetimeFrom();
+        LocalDateTime datetimeTo = request.getDatetimeTo();
+        Double speedCoefficient = request.getBox().getBoxType().getSpeedcoefficient();
+        Duration washTypeDuration = request.getWashType().getDuration();
+        washTypeDuration = Duration.of(
+                (long) (washTypeDuration.toMillis() * speedCoefficient),
+                ChronoUnit.MILLIS);
+        List<BookingStatuses> statuses = List.of(BookingStatuses.CANCELLED, BookingStatuses.DELETED);
+        List<Booking> bookings = bookingRepository.findAllByDatetimeFromGreaterThanAndDatetimeToLessThanAndStatusNotInOrderByDatetimeFrom(
+                datetimeFrom, datetimeTo, statuses
+        );
+        LocalDateTime start = datetimeFrom;
+        LocalDateTime end = datetimeTo;
+        for (int i = 0; i < bookings.size(); i++) {
+            Booking b = bookings.get(i);
+            Duration checkedDurationBeforeNextBooking = Duration.between(start, b.getDatetimeFrom());
+            if(bookings.size() == 1){
+                Duration  checkedDurationBeforeLastBooking = Duration.between(b.getDatetimeTo(), end);
+            }
+            if (checkedDurationBeforeNextBooking.compareTo(washTypeDuration) >= 0) {
+                offer.setDuration(washTypeDuration);
+                offer.setTimeFrom(start);
+                offer.setTimeTo(start.plus(washTypeDuration));
+                break;
+            } else {
+                start = b.getDatetimeTo();
+            }
+        }
+        return offer;
+    }
+*/
 

@@ -26,11 +26,7 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @Fetch(FetchMode.JOIN)
-    private Box box;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @Fetch(FetchMode.JOIN)
     private WashType washType;
 

@@ -13,9 +13,7 @@ import org.philosophy.carwashing.model.Request;
 public interface RequestRequestMapper extends
         GenericRequestMapper<Request, RequestRequestDto> {
 
-    @Mapping(target = "box.id", source = "boxId")
     @Mapping(target = "washType.id", source = "washTypeId")
-    //@Mapping(target = "user.id", source = "userId")
     Request toEntity(RequestRequestDto requestDto);
 
 }

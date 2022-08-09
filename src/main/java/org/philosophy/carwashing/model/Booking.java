@@ -27,14 +27,9 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @Fetch(FetchMode.JOIN)
     private Request request;
-
-/*
-    @OneToOne(cascade = CascadeType.ALL)
-    @Fetch(FetchMode.JOIN)
-*/
     private Integer userId;
 
     private Double totalCost;

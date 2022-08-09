@@ -1,6 +1,9 @@
 package org.philosophy.carwashing.dto.responsedto;
 
 import lombok.*;
+import org.philosophy.carwashing.model.Box;
+import org.philosophy.carwashing.model.User;
+import org.philosophy.carwashing.model.WashType;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -14,11 +17,9 @@ import java.time.LocalDateTime;
 public class RequestResponseDto {
 
     private Integer id;
-    private Integer boxId;
     private Integer washTypeId;
     private Integer userId;
-    private LocalDateTime responseDatetimeFrom;
-    private LocalDateTime responseDatetimeTo;
-    private Duration duration;
+    private LocalDateTime dateTimeFrom;
+    private LocalDateTime dateTimeTo;
 
 }

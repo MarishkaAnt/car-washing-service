@@ -1,5 +1,6 @@
 package org.philosophy.carwashing.service;
 
+/*
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,9 +26,11 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.philosophy.carwashing.service.utilits.CommonBuilders.*;
+*/
 
 class RequestServiceImplTest {
 
+/*
     private static RequestServiceImpl requestService;
     private static RequestRepository requestRepository;
     private static BookingRepository bookingRepository;
@@ -80,6 +83,7 @@ class RequestServiceImplTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
+*/
 
 
 }

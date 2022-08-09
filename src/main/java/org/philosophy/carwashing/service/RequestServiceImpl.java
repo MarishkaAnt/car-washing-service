@@ -55,18 +55,23 @@ public class RequestServiceImpl implements GenericService<Integer,
     }
 
     @Override
-    public void deleteById(Integer integer) {
-
+    public void deleteById(Integer id) {
+        validator.validateIdIsNullOrNegative(id);
+        requestRepository.deleteById(id);
     }
 
     @Override
-    public RequestResponseDto findById(Integer integer) {
-        return null;
+    public RequestResponseDto findById(Integer id) {
+        validator.validateIdIsNullOrNegative(id);
+        return requestRepository.findById(id)
+                .map(requestResponseMapper::toDto)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public Page<RequestResponseDto> findAll(Pageable pageable) {
-        return null;
+        return requestRepository.findAll(pageable)
+                .map(requestResponseMapper::toDto);
     }
 
     public Offer generateOffer(Request request){
@@ -87,14 +92,15 @@ public class RequestServiceImpl implements GenericService<Integer,
         for (int i = 0; i < bookings.size(); i++) {
             Booking b = bookings.get(i);
             Duration checkedDuration = Duration.between(start, b.getDatetimeFrom());
+            if(i == (bookings.size() - 1)){
+                checkedDuration = Duration.between(b.getDatetimeTo(), end);
+            }
             if (checkedDuration.compareTo(washTypeDuration) >= 0) {
                 offer.setDuration(washTypeDuration);
                 offer.setTimeFrom(start);
                 offer.setTimeTo(start.plus(washTypeDuration));
                 break;
-            } else if(i == (bookings.size() - 1)){
-                    checkedDuration = Duration.between(b.getDatetimeTo(), end);
-            }else {
+            } else {
                 start = b.getDatetimeTo();
             }
         }

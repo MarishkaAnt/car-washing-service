@@ -78,10 +78,10 @@ public class RequestServiceImpl implements GenericService<Integer,
         Offer offer = new Offer();
         LocalDateTime datetimeFrom = request.getDatetimeFrom();
         LocalDateTime datetimeTo = request.getDatetimeTo();
-        Double speedcoefficient = request.getBox().getBoxType().getSpeedcoefficient();
+        Double speedCoefficient = request.getBox().getBoxType().getSpeedcoefficient();
         Duration washTypeDuration = request.getWashType().getDuration();
         washTypeDuration = Duration.of(
-                (long) (washTypeDuration.toMillis() * speedcoefficient),
+                (long) (washTypeDuration.toMillis() * speedCoefficient),
                 ChronoUnit.MILLIS);
         List<BookingStatuses> statuses = List.of(BookingStatuses.CANCELLED, BookingStatuses.DELETED);
         List<Booking> bookings = bookingRepository.findAllByDatetimeFromGreaterThanAndDatetimeToLessThanAndStatusNotInOrderByDatetimeFrom(
@@ -91,11 +91,11 @@ public class RequestServiceImpl implements GenericService<Integer,
         LocalDateTime end = datetimeTo;
         for (int i = 0; i < bookings.size(); i++) {
             Booking b = bookings.get(i);
-            Duration checkedDuration = Duration.between(start, b.getDatetimeFrom());
-            if(i == (bookings.size() - 1)){
-                checkedDuration = Duration.between(b.getDatetimeTo(), end);
+            Duration checkedDurationBeforeNextBooking = Duration.between(start, b.getDatetimeFrom());
+            if(bookings.size() == 1){
+                Duration  checkedDurationBeforeLastBooking = Duration.between(b.getDatetimeTo(), end);
             }
-            if (checkedDuration.compareTo(washTypeDuration) >= 0) {
+            if (checkedDurationBeforeNextBooking.compareTo(washTypeDuration) >= 0) {
                 offer.setDuration(washTypeDuration);
                 offer.setTimeFrom(start);
                 offer.setTimeTo(start.plus(washTypeDuration));

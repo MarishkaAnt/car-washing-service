@@ -1,1 +1,0 @@
-alter table public.request drop constraint if exists fk_request_users;

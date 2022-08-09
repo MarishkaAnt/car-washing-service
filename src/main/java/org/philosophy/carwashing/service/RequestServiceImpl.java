@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 
-import static org.philosophy.carwashing.service.util.CommonStringConstants.USER_NOT_FOUND_MESSAGE;
-import static org.philosophy.carwashing.service.util.CommonStringConstants.WASH_TYPE_NOT_FOUND_MESSAGE;
+import static org.philosophy.carwashing.util.CommonStringConstants.USER_NOT_FOUND_MESSAGE;
+import static org.philosophy.carwashing.util.CommonStringConstants.WASH_TYPE_NOT_FOUND_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +61,14 @@ public class RequestServiceImpl implements GenericService<Integer,
     public Page<RequestResponseDto> findAll(Pageable pageable) {
         return requestRepository.findAll(pageable)
                 .map(requestResponseMapper::toDto);
+    }
+/*
+ToDo
+ */
+
+    @Override
+    public RequestResponseDto update(Integer integer, RequestRequestDto dto) {
+        return null;
     }
 
     private void validateRequestRequestDtoFields(RequestRequestDto dto){

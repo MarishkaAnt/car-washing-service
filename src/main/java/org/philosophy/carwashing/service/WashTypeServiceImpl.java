@@ -51,4 +51,11 @@ public class WashTypeServiceImpl implements GenericService<Integer,
         return washTypeRepository.findAll(pageable)
                 .map(washTypeResponseMapper::toDto);
     }
+/*
+ToDo
+ */
+    @Override
+    public WashTypeResponseDto update(Integer integer, WashTypeRequestDto dto) {
+        return null;
+    }
 }

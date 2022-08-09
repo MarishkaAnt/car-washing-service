@@ -61,4 +61,12 @@ public class UserServiceImpl implements GenericService<Integer,
         return userRepository.findAll(pageable)
                 .map(responseMapper::toDto);
     }
+/*
+ToDo
+ */
+
+    @Override
+    public UserViewResponseDto update(Integer integer, UserSignInRequestDto dto) {
+        return null;
+    }
 }

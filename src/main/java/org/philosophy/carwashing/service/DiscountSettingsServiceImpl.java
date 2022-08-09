@@ -65,6 +65,11 @@ public class DiscountSettingsServiceImpl implements GenericService<Integer,
                 .map(discountSettingsResponseMapper::toDto);
     }
 
+    @Override
+    public DiscountSettingsResponseDto update(Integer integer, DiscountSettingsRequestDto dto) {
+        return null;
+    }
+
     public List<DiscountSettingsResponseDto> findAll(){
         List<DiscountSettings> discounts = discountSettingsRepository.findAll();
         return discounts.stream()

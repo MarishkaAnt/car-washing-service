@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
+import static org.philosophy.carwashing.util.CommonStringConstants.BOX_TYPE_NOT_FOUND_MESSAGE;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ public class BoxServiceImpl implements GenericService<Integer, BoxResponseDto, B
         parameterValidator.validateDtoNotNull(dto);
         Box box = boxRequestMapper.toEntity(dto);
         BoxType boxType = boxTypeRepository.findById(box.getBoxType().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Бокс с таким Id не найден"));
+                .orElseThrow(() -> new EntityNotFoundException(BOX_TYPE_NOT_FOUND_MESSAGE));
         box.setBoxType(boxType);
         box.setHasDiscount(false);
         box.setDiscountAmount(0.0);
@@ -63,6 +65,11 @@ public class BoxServiceImpl implements GenericService<Integer, BoxResponseDto, B
     public Page<BoxResponseDto> findAll(Pageable pageable) {
         return boxRepository.findAll(pageable)
                 .map(boxResponseMapper::toDto);
+    }
+
+    @Override
+    public BoxResponseDto update(Integer integer, BoxRequestDto dto) {
+        return null;
     }
 
     public Page<BoxResponseDto> findAll(Specification<Box> specification, Pageable pageable){

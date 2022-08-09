@@ -2,10 +2,13 @@ package org.philosophy.carwashing.service;
 
 import lombok.RequiredArgsConstructor;
 import org.philosophy.carwashing.dto.requestdto.BoxTypeRequestDto;
+import org.philosophy.carwashing.dto.responsedto.BoxResponseDto;
 import org.philosophy.carwashing.dto.responsedto.BoxTypeResponseDto;
+import org.philosophy.carwashing.model.Box;
 import org.philosophy.carwashing.repository.BoxTypeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +34,10 @@ public class BoxTypeServiceImpl implements GenericService<Integer, BoxTypeRespon
 
     @Override
     public Page<BoxTypeResponseDto> findAll(Pageable pageable) {
+        return null;
+    }
+
+    public Page<BoxResponseDto> findAll(Specification<Box> specification, Pageable pageable) {
         return null;
     }
 }

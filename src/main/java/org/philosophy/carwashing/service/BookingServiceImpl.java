@@ -6,8 +6,6 @@ import org.philosophy.carwashing.dto.responsedto.BookingResponseDto;
 import org.philosophy.carwashing.mapper.request.BookingRequestMapper;
 import org.philosophy.carwashing.mapper.response.BookingResponseMapper;
 import org.philosophy.carwashing.model.Booking;
-import org.philosophy.carwashing.model.Box;
-import org.philosophy.carwashing.model.BoxType;
 import org.philosophy.carwashing.model.Request;
 import org.philosophy.carwashing.repository.BookingRepository;
 import org.philosophy.carwashing.repository.RequestRepository;
@@ -17,9 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +27,7 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
     private final ParameterValidator<BookingRequestDto> validator;
 
     public BookingResponseDto create(BookingRequestDto dto) {
-        validator.validateEntityNotNull(dto);
+        validator.validateDtoNotNull(dto);
         Booking booking = bookingRequestMapper.toEntity(dto);
         Request request = requestRepository.findById(booking.getRequest().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Бронь с таким Id не найден"));

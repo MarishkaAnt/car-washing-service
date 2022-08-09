@@ -11,7 +11,7 @@ public class ParameterValidator <D>{
         }
     }
 
-    public void validateEntityNotNull(D entity){
+    public void validateDtoNotNull(D entity){
         if(entity == null) {
             throw new IllegalArgumentException("Передаваемая сущность == null");
         }

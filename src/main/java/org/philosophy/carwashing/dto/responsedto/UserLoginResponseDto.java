@@ -22,7 +22,7 @@ public class UserLoginResponseDto extends DiscountableDto {
     private String firstName;
     private String lastName;
     private Boolean isActive;
-    private Roles role;
+    private String role;
     List<Booking> bookings;
 
 }

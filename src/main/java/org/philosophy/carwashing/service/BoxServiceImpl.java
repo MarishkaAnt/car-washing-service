@@ -34,7 +34,7 @@ public class BoxServiceImpl implements GenericService<Integer, BoxResponseDto, B
     @Override
     @Transactional
     public BoxResponseDto create(BoxRequestDto dto) {
-        parameterValidator.validateEntityNotNull(dto);
+        parameterValidator.validateDtoNotNull(dto);
         Box box = boxRequestMapper.toEntity(dto);
         BoxType boxType = boxTypeRepository.findById(box.getBoxType().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Бокс с таким Id не найден"));

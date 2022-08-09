@@ -11,7 +11,7 @@ import org.philosophy.carwashing.enums.BoxTypes;
 @EqualsAndHashCode
 public class BoxTypeRequestDto {
 
-    private Integer typeId;
+    private String type;
     private Double speedcoefficient;
 
 }

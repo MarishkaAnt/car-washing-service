@@ -34,7 +34,7 @@ public class RequestServiceImpl implements GenericService<Integer,
 
     @Override
     public RequestResponseDto create(RequestRequestDto dto) {
-        validator.validateEntityNotNull(dto);
+        validator.validateDtoNotNull(dto);
         validateRequestRequestDtoFields(dto);
         Request request = requestRequestMapper.toEntity(dto);
         Box box = boxRepository.findById(dto.getBoxId()).orElseThrow(

@@ -2,7 +2,9 @@ package org.philosophy.carwashing.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.philosophy.carwashing.dto.requestdto.BookingRequestDto;
 import org.philosophy.carwashing.dto.requestdto.RequestRequestDto;
+import org.philosophy.carwashing.dto.responsedto.BookingResponseDto;
 import org.philosophy.carwashing.dto.responsedto.RequestResponseDto;
 import org.philosophy.carwashing.service.RequestServiceImpl;
 import org.springframework.data.domain.Page;
@@ -43,5 +45,13 @@ public class RequestController {
         requestService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{id}")
+    //@Secured(ROLE_ADMIN)
+    public ResponseEntity<RequestResponseDto> update(@RequestBody RequestRequestDto request, @PathVariable Integer id) {
+        RequestResponseDto responseDto = requestService.update(id, request);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
 
 }

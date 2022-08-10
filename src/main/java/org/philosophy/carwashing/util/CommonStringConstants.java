@@ -12,5 +12,10 @@ public class CommonStringConstants {
     public static final String NULL_FIELDS_IN_REQUEST_DTO = "null fields in request dto";
     public static final String DELETING_NOT_ALOWED = "Удаление невозможно, сущность связана с другими сущностями ";
     public static final String NOTING_FOUND = "По вашему запросу ничего не найдено, измените параметры поиска";
+    public static final String ACCESS_TOKEN = "access_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String ROLES = "roles";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
 
 }

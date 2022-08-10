@@ -20,7 +20,6 @@ public class BookingController {
     private final BookingServiceImpl bookingServiceImpl;
 
     @GetMapping
-    @Tag(name = "Выводит все имеющиеся в БД брони")
     public ResponseEntity<Page<BookingResponseDto>> getAll(Pageable pageable){
         Page<BookingResponseDto> dtos = bookingServiceImpl.findAll(pageable);
         return ResponseEntity.ok().body(dtos);

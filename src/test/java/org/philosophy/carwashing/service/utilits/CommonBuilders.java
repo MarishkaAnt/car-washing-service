@@ -51,8 +51,8 @@ public class CommonBuilders {
                 .userId(CORRECT_ID_EQUALS_1)
                 .datetimeFrom(CORRECT_REQUEST_START_DATE_TIME)
                 .datetimeTo(CORRECT_REQUEST_END_DATE_TIME)
-                .responseDatetimeFrom(RESPONSE_DATETIME_FROM)
-                .responseDatetimeTo(RESPONSE_DATETIME_TO)
+                .datetimeFrom(RESPONSE_DATETIME_FROM)
+                .datetimeFrom(RESPONSE_DATETIME_TO)
                 .build();
     }
 
@@ -68,7 +68,7 @@ public class CommonBuilders {
         return Booking.builder()
                 .id(CORRECT_ID_EQUALS_1)
                 .request(getCorrectRequestAfterSaving())
-                .userId(CORRECT_ID_EQUALS_1)
+//                .user(CORRECT_ID_EQUALS_1)
                 .totalCost(CORRECT_COST_300)
                 .datetimeFrom(DATETIME_FROM_10)
                 .datetimeTo(DATE_TIME_TO_10_15)

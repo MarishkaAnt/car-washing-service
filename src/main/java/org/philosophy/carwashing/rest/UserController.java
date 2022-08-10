@@ -18,7 +18,6 @@ public class UserController {
     private final UserServiceImpl bookingServiceImpl;
 
     @GetMapping
-    @Tag(name = "Выводит все имеющиеся в БД брони")
     public ResponseEntity<Page<UserViewResponseDto>> getAll(Pageable pageable){
         Page<UserViewResponseDto> dtos = bookingServiceImpl.findAll(pageable);
         return ResponseEntity.ok().body(dtos);

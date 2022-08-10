@@ -34,9 +34,4 @@ public class Request {
 
     private LocalDateTime datetimeFrom;
     private LocalDateTime datetimeTo;
-
-    private LocalDateTime responseDatetimeFrom;
-    private LocalDateTime responseDatetimeTo;
-    private Duration duration;
-
 }

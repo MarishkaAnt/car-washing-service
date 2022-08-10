@@ -14,8 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 
-import static org.philosophy.carwashing.util.CommonStringConstants.USER_NOT_FOUND_MESSAGE;
-import static org.philosophy.carwashing.util.CommonStringConstants.WASH_TYPE_NOT_FOUND_MESSAGE;
+import java.time.LocalDateTime;
+
+import static org.philosophy.carwashing.util.CommonStringConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class RequestServiceImpl implements GenericService<Integer,
     public RequestResponseDto create(RequestRequestDto dto) {
         validator.validateDtoNotNull(dto);
         validateRequestRequestDtoFields(dto);
+        validateTimeFromBeforeTimeTo(dto);
         Request request = requestRequestMapper.toEntity(dto);
         WashType washType = washTypeRepository.findById(dto.getWashTypeId())
                 .orElseThrow(() -> new EntityNotFoundException(WASH_TYPE_NOT_FOUND_MESSAGE));
@@ -62,23 +64,44 @@ public class RequestServiceImpl implements GenericService<Integer,
         return requestRepository.findAll(pageable)
                 .map(requestResponseMapper::toDto);
     }
-/*
-ToDo
- */
 
     @Override
-    public RequestResponseDto update(Integer integer, RequestRequestDto dto) {
-        return null;
+    public RequestResponseDto update(Integer id, RequestRequestDto dto) {
+        validator.validateDtoNotNull(dto);
+        validateRequestRequestDtoFields(dto);
+        validateTimeFromBeforeTimeTo(dto);
+        Request request = requestRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        request.setDatetimeFrom(dto.getDatetimeFrom());
+        request.setDatetimeTo(dto.getDatetimeTo());
+        WashType washType = washTypeRepository.findById(dto.getWashTypeId())
+                .orElseThrow(() -> new EntityNotFoundException(WASH_TYPE_NOT_FOUND_MESSAGE));
+        request.setWashType(washType);
+        userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND_MESSAGE));
+        Request saved = requestRepository.save(request);
+        return requestResponseMapper.toDto(saved);
     }
 
-    private void validateRequestRequestDtoFields(RequestRequestDto dto){
-        if(
-             dto.getDatetimeFrom() == null ||
-             dto.getDatetimeTo() == null ||
-             dto.getUserId() == null ||
-             dto.getWashTypeId() == null
+    private void validateRequestRequestDtoFields(RequestRequestDto dto) {
+        if (
+                dto.getDatetimeFrom() == null ||
+                        dto.getDatetimeTo() == null ||
+                        dto.getUserId() == null ||
+                        dto.getWashTypeId() == null
         ) {
-            throw new IllegalArgumentException("null fields in request dto");
+            throw new IllegalArgumentException(NULL_FIELDS_IN_REQUEST_DTO);
         }
     }
+
+    private void validateTimeFromBeforeTimeTo(RequestRequestDto dto) {
+
+        LocalDateTime datetimeFrom = dto.getDatetimeFrom();
+        LocalDateTime datetimeTo = dto.getDatetimeTo();
+        if (datetimeTo.isBefore(datetimeFrom)) {
+            throw new IllegalArgumentException(WRONG_DATE_SEQUENCE);
+        }
+
+    }
+
 }

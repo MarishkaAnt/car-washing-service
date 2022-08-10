@@ -17,14 +17,14 @@ public class BookingResponseDto {
 
     private Integer id;
     private Integer requestId;
+    private Box box;
+    private Integer userId;
     private Double totalCost;
+    private LocalDateTime datetimeFrom;
+    private LocalDateTime datetimeTo;
+    private Duration duration;
     private BookingStatuses status;
     private Boolean isPaid;
     private LocalDateTime paymentTime;
-    private LocalDateTime dateTimeFrom;
-    private LocalDateTime dateTimeTo;
-    private Duration duration;
-    private Integer userId;
-    private Box box;
 
 }

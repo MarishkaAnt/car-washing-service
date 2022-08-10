@@ -29,9 +29,12 @@ public class User extends Discountable {
     private Boolean isActive;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
     private Roles role;
 
+/*
     @OneToMany()
     @Fetch(FetchMode.JOIN)
     List<Booking> bookings;
+*/
 }

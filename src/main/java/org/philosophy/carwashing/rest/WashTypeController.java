@@ -18,7 +18,6 @@ public class WashTypeController {
     private final WashTypeServiceImpl washTypeService;
 
     @GetMapping
-    @Tag(name = "Выводит все имеющиеся в БД услуги")
     public ResponseEntity<Page<WashTypeResponseDto>> getAll(Pageable pageable){
         Page<WashTypeResponseDto> dtos = washTypeService.findAll(pageable);
         return ResponseEntity.ok().body(dtos);

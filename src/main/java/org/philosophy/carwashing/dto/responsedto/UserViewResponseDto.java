@@ -2,6 +2,9 @@ package org.philosophy.carwashing.dto.responsedto;
 
 import lombok.*;
 import org.philosophy.carwashing.dto.DiscountableDto;
+import org.philosophy.carwashing.model.Booking;
+
+import java.util.List;
 
 /**
  * Dto для вывода пользователя на фронтенд

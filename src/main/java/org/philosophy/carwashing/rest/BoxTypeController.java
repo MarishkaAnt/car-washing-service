@@ -19,7 +19,6 @@ public class BoxTypeController {
     private final BoxTypeServiceImpl boxTypeService;
 
     @GetMapping
-    @Tag(name = "Выводит все имеющиеся в БД виды боксов")
     public ResponseEntity<Page<BoxTypeResponseDto>> getAllWithParameters(Pageable pageable){
         Page<BoxTypeResponseDto> dtos = boxTypeService.findAll(pageable);
         return ResponseEntity.ok().body(dtos);

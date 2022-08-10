@@ -40,12 +40,12 @@ public class UserServiceImpl implements GenericService<Integer,
     public void deleteById(Integer id) {
         validator.validateIdIsNullOrNegative(id);
         User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        List<Booking> bookings = user.getBookings();
-        if(bookings.size() != 0) {
+//        List<Booking> bookings = user.getBookings();
+//        if(bookings.size() != 0) {
             user.setIsActive(false);
-        } else {
-            userRepository.deleteById(id);
-        }
+//        } else {
+//            userRepository.deleteById(id);
+//        }
     }
 
     @Override

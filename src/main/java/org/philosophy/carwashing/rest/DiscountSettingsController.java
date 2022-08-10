@@ -20,7 +20,6 @@ public class DiscountSettingsController {
     private final DiscountSettingsServiceImpl discountSettingsService;
 
     @GetMapping
-    @Tag(name = "Выводит все имеющиеся в БД брони")
     public ResponseEntity<Page<DiscountSettingsResponseDto>> getAll(Pageable pageable){
         Page<DiscountSettingsResponseDto> dtos = discountSettingsService.findAll(pageable);
         return ResponseEntity.ok().body(dtos);

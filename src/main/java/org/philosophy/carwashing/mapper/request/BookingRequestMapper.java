@@ -14,6 +14,7 @@ public interface BookingRequestMapper extends
         GenericRequestMapper<Booking, BookingRequestDto> {
 
     @Mapping(target="request.id", source="requestId")
+    @Mapping(target="box.id", source="boxId")
     Booking toEntity(BookingRequestDto dto);
 
 }

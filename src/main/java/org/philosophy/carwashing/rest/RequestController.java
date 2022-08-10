@@ -20,7 +20,6 @@ public class RequestController {
     private final RequestServiceImpl requestService;
 
     @GetMapping
-    @Tag(name = "Выводит все имеющиеся в БД боксы")
     public ResponseEntity<Page<RequestResponseDto>> getAll(Pageable pageable){
         Page<RequestResponseDto> dtos = requestService.findAll(pageable);
         return ResponseEntity.ok().body(dtos);

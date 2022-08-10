@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 	implementation 'org.hibernate.validator:hibernate-validator'
@@ -29,6 +29,7 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
 	implementation 'com.vladmihalcea:hibernate-types-52:2.17.3'
+	implementation 'com.auth0:java-jwt:4.0.0'
 
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -45,6 +46,7 @@ dependencies {
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
+	options.compilerArgs << "-Xlint:deprecation"
 }
 
 tasks.named('test') {

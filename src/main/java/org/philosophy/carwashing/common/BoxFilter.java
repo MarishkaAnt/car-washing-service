@@ -1,5 +1,9 @@
 package org.philosophy.carwashing.common;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.philosophy.carwashing.dto.requestdto.BoxRequestDto;
 import org.philosophy.carwashing.dto.responsedto.BoxResponseDto;
 import org.philosophy.carwashing.model.Box;
@@ -11,6 +15,9 @@ import java.time.LocalTime;
 import static org.philosophy.carwashing.common.BoxSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class BoxFilter implements Filter<Box>{
 
     private Integer id;
@@ -18,10 +25,11 @@ public class BoxFilter implements Filter<Box>{
     private LocalTime openTime;
     private LocalTime closeTime;
 
-
     @Override
     public Specification<Box> toSpecification() {
         return where(hasId(id))
-                .and(hasBoxType(boxType));
+                .and(hasBoxType(boxType))
+                .and(hasOpenTime(openTime))
+                .and(hasCloseTime(closeTime));
     }
 }

@@ -1,6 +1,5 @@
 package org.philosophy.carwashing.rest;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.philosophy.carwashing.dto.requestdto.BoxTypeRequestDto;
 import org.philosophy.carwashing.dto.responsedto.BoxTypeResponseDto;
@@ -9,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +21,6 @@ public class BoxTypeController {
         Page<BoxTypeResponseDto> dtos = boxTypeService.findAll(pageable);
         return ResponseEntity.ok().body(dtos);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<BoxTypeResponseDto> getById(@PathVariable Integer id){
@@ -39,7 +36,7 @@ public class BoxTypeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id){
         boxTypeService.deleteById(id);
         return ResponseEntity.ok().build();
     }

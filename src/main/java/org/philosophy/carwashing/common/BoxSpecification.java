@@ -36,7 +36,7 @@ public class BoxSpecification {
         if (closeTime == null) {
             return null;
         }
-        return (root, query, cb) -> cb.equal(root.get("openTime"), closeTime);
+        return (root, query, cb) -> cb.equal(root.get("closeTime"), closeTime);
 
     }
 }

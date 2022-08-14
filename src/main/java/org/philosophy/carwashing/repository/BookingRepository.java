@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,4 +28,9 @@ public interface BookingRepository extends JpaRepository<Booking,Integer> {
             LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo, List<BookingStatuses> statuses, Integer boxId);
 
 
+    @Query(nativeQuery = true,
+    value = "select sum(total_cost) as total_money_amount " +
+            "from bookings where status = 'ADMITTED' and is_paid = true  " +
+            "group by total_cost")
+    BigDecimal getMoneyAmount();
 }

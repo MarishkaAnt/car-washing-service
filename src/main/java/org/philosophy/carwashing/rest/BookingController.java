@@ -1,16 +1,16 @@
 package org.philosophy.carwashing.rest;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.philosophy.carwashing.dto.requestdto.BookingRequestDto;
 import org.philosophy.carwashing.dto.responsedto.BookingResponseDto;
+import org.philosophy.carwashing.enums.BookingStatuses;
 import org.philosophy.carwashing.service.BookingServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +32,13 @@ public class BookingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
+    @GetMapping("/accounting")
+    //@Secured(ROLE_ADMIN)
+    public ResponseEntity<BigDecimal> getAccounting(){
+        BigDecimal totalMoneyAmount = bookingServiceImpl.getAccounting();
+        return ResponseEntity.ok().body(totalMoneyAmount);
+    }
+
     @PostMapping
     //@Secured(ROLE_ADMIN)
     public ResponseEntity<BookingResponseDto> create(@RequestBody BookingRequestDto request) {
@@ -47,9 +54,18 @@ public class BookingController {
 
     @PutMapping("/{id}")
     //@Secured(ROLE_ADMIN)
-    public ResponseEntity<BookingResponseDto> update(@RequestBody BookingRequestDto request, @PathVariable Integer id) {
-        BookingResponseDto responseDto = bookingServiceImpl.update(id, request);
+    public ResponseEntity<BookingResponseDto> update(@RequestBody BookingRequestDto dto, @PathVariable Integer id) {
+        BookingResponseDto responseDto = bookingServiceImpl.update(id, dto);
         return ResponseEntity.ok().body(responseDto);
     }
+
+    @PutMapping("/{id}/change-status")
+    //@Secured(ROLE_ADMIN)
+    public ResponseEntity<BookingResponseDto> changeStatus(@PathVariable Integer id, @RequestBody String status) {
+        BookingResponseDto responseDto = bookingServiceImpl.changeStatus(id, BookingStatuses.valueOf(status));
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+
 
 }

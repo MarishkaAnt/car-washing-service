@@ -6,12 +6,10 @@ import org.philosophy.carwashing.dto.responsedto.BookingResponseDto;
 import org.philosophy.carwashing.enums.BookingStatuses;
 import org.philosophy.carwashing.mapper.request.BookingRequestMapper;
 import org.philosophy.carwashing.mapper.response.BookingResponseMapper;
-import org.philosophy.carwashing.model.Booking;
-import org.philosophy.carwashing.model.Box;
-import org.philosophy.carwashing.model.Request;
+import org.philosophy.carwashing.model.*;
 import org.philosophy.carwashing.repository.BookingRepository;
-import org.philosophy.carwashing.repository.BoxRepository;
-import org.philosophy.carwashing.repository.RequestRepository;
+import org.philosophy.carwashing.repository.UserRepository;
+import org.philosophy.carwashing.util.Discounter;
 import org.philosophy.carwashing.util.Offer;
 import org.philosophy.carwashing.validator.ParameterValidator;
 import org.springframework.data.domain.Page;
@@ -21,77 +19,62 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
-import static org.philosophy.carwashing.util.CommonStringConstants.*;
+import static org.philosophy.carwashing.util.CommonStringConstants.BOOKING_NOT_FOUND_MESSAGE;
 
+/**
+ * Сервис для работы с бронью
+ */
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements GenericService<Integer, BookingResponseDto, BookingRequestDto> {
 
     private final BookingRepository bookingRepository;
-    private final RequestRepository requestRepository;
-    private final BoxRepository boxRepository;
+    private final UserRepository userRepository;
+    private final OfferService offerService;
     private final BookingRequestMapper bookingRequestMapper;
     private final BookingResponseMapper bookingResponseMapper;
     private final ParameterValidator<BookingRequestDto> validator;
 
+    /**
+     * Автоматически создает запись основываясь на параметрах входящей Dto
+     * @param dto - запрос на создание брони
+     * @return - зозданную автоматически и сохраненную в БД бронь
+     */
     @Override
     @Transactional
     public BookingResponseDto create(BookingRequestDto dto) {
         validator.validateDtoNotNull(dto);
         Booking booking = bookingRequestMapper.toEntity(dto);
-        Request request = requestRepository.findById(booking.getRequest().getId())
-                .orElseThrow(() -> new EntityNotFoundException(REQUEST_NOT_FOUND_MESSAGE));
-        booking.setRequest(request);
-        booking.setUserId(request.getUserId());
         Integer requestedBoxId = dto.getBoxId();
-        Offer foundedOffer = new Offer();
-        if (requestedBoxId != null) {
-            validator.validateIdIsNullOrNegative(requestedBoxId);
-            Box box = boxRepository.findById(requestedBoxId)
-                    .orElseThrow(EntityNotFoundException::new);
-            foundedOffer = generateOffer(request, box);
-        } else {
-            List<Box> boxes = boxRepository.findAllOrderById();
-            List<Offer> offersByBox = new ArrayList<>();
-            for (Box box : boxes) {
-                offersByBox.add(generateOffer(request, box));
-            }
-            foundedOffer = offersByBox.stream()
-                    .filter(offer -> offer.getDuration() != null && offer.getTimeFrom() != null &&
-                            offer.getTimeTo() != null && offer.getBox() != null)
-                    .findFirst()
-                    .orElseThrow(() -> new EntityNotFoundException(NOTING_FOUND));
-        }
 
-        Double totalCost = getTotalCost(request);
-        booking.setTotalCost(totalCost);
+        Offer foundedOffer = offerService.generateOffer(booking, requestedBoxId);
         booking.setStatus(BookingStatuses.NEW);
         booking.setBox(foundedOffer.getBox());
         booking.setDatetimeFrom(foundedOffer.getTimeFrom());
         booking.setDatetimeTo(foundedOffer.getTimeTo());
-        booking.setDuration(foundedOffer.getDuration());
+
+        BigDecimal totalCost = getTotalCost(booking);
+        booking.setTotalCost(totalCost);
         booking.setIsPaid(false);
         Booking saved = bookingRepository.save(booking);
         return bookingResponseMapper.toDto(saved);
     }
 
+    /**
+     * Выполняет софт-делит со сменой статуса на DELETED
+     *
+     * @param id - идентификатор брони
+     */
     @Override
     @Transactional
     public void deleteById(Integer id) {
         validator.validateIdIsNullOrNegative(id);
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        if (booking.getRequest() != null) {
-            throw new IllegalArgumentException(DELETING_NOT_ALOWED);
-        }
-        bookingRepository.deleteById(id);
+        booking.setStatus(BookingStatuses.DELETED);
+        bookingRepository.save(booking);
     }
 
     @Override
@@ -108,71 +91,62 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
                 .map(bookingResponseMapper::toDto);
     }
 
-    /*
-    ToDo
+    /**
+     * Полное редактирование брони по запросу, заменяет все не null поля из входящего DTO
+     * Если пользователь хочет изменить время брони, тип услуги или тип бокса,
+     * то текущая бронь помечается как CANCELLED, и создается новая бронь.
+     *
+     * @param id  - идентификатор редактируемой брони
+     * @param dto - DTO содержащая поля для замены в найденной по id брони
+     * @return - возвращает измененную бронь
      */
     @Override
     public BookingResponseDto update(Integer id, BookingRequestDto dto) {
         validator.validateIdIsNullOrNegative(id);
-        validator.validateDtoNotNull(dto);
-
-        return null;
+        Booking founded = bookingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(BOOKING_NOT_FOUND_MESSAGE));
+        founded.setStatus(BookingStatuses.CANCELLED);
+        bookingRepository.save(founded);
+        if (dto.getDatetimeFrom() == null && dto.getDatetimeTo() == null) {
+            dto.setDatetimeFrom(founded.getDatetimeFrom());
+            dto.setDatetimeTo(founded.getDatetimeTo());
+        }
+        if (dto.getWashTypeId() != null) {
+            founded.setWashType(WashType.builder().id(dto.getWashTypeId()).build());
+        }
+        if (dto.getBoxId() != null) {
+            founded.setBox(Box.builder().id(dto.getBoxId()).build());
+        }
+        return create(dto);
     }
 
-    private Double getTotalCost(Request request) {
-        Double totalCost;
-        if (request.getWashType().getDiscountAmount() >= 1.0) {
-            totalCost = request.getWashType().getCost() / 100 * request.getWashType().getDiscountAmount();
-        } else {
-            totalCost = request.getWashType().getCost();
-        }
+    public BookingResponseDto changeStatus(Integer id, BookingStatuses status) {
+        validator.validateIdIsNullOrNegative(id);
+        Booking founded = bookingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(BOOKING_NOT_FOUND_MESSAGE));
+        founded.setStatus(status);
+        Booking saved = bookingRepository.save(founded);
+        return bookingResponseMapper.toDto(saved);
+    }
+
+    private BigDecimal getTotalCost(Booking booking) {
+        BigDecimal totalCost;
+        BigDecimal washTypeCost = booking.getWashType().getCost();
+        Integer washTypeDiscountAmount = booking.getWashType().getDiscountAmount();
+        Integer boxDiscountAmount = booking.getBox().getDiscountAmount();
+        Integer userDiscountAmount = userRepository.findById(booking.getUser().getId())
+                .map(Discountable::getDiscountAmount).orElse(0);
+        totalCost = Discounter.applyDiscount(washTypeCost, washTypeDiscountAmount);
+        totalCost = Discounter.applyDiscount(totalCost, boxDiscountAmount);
+        totalCost = Discounter.applyDiscount(totalCost, userDiscountAmount);
         return totalCost;
     }
 
-    public Offer generateOffer(Request request, Box box) {
-        Offer offer = new Offer();
-        LocalDateTime datetimeFrom = request.getDatetimeFrom();
-        LocalDateTime datetimeTo = request.getDatetimeTo();
-        Duration washTypeDuration = request.getWashType().getDuration();
-        Double speedCoefficient = box.getBoxType().getSpeedcoefficient();
-        LocalTime openTime = box.getOpenTime();
-        LocalTime closeTime = box.getCloseTime();
-        if(openTime.isAfter(datetimeFrom.toLocalTime())){
-            datetimeFrom = LocalDateTime.of(datetimeFrom.toLocalDate(), openTime);
-        }
-        if(closeTime.isBefore(datetimeTo.toLocalTime())){
-            datetimeTo = LocalDateTime.of(datetimeTo.toLocalDate(), closeTime);
-        }
-        washTypeDuration = Duration.of(
-                (long) (washTypeDuration.toMillis() * speedCoefficient),
-                ChronoUnit.MILLIS);
-        List<BookingStatuses> statuses = List.of(BookingStatuses.CANCELLED, BookingStatuses.DELETED);
-        List<Booking> bookings = bookingRepository
-                .findAllByRequestAndBox(
-                datetimeFrom, datetimeTo, statuses, box.getId());
-        LocalDateTime start = datetimeFrom;
-        LocalDateTime end = datetimeTo;
-        for (Booking b : bookings) {
-            Duration checkedDurationBeforeNextBooking = Duration.between(start, b.getDatetimeFrom());
-            if (checkedDurationBeforeNextBooking.compareTo(washTypeDuration) >= 0) {
-                offer.setDuration(washTypeDuration);
-                offer.setTimeFrom(start);
-                offer.setTimeTo(start.plus(washTypeDuration));
-                offer.setBox(box);
-                return offer;
-            }
-            start = b.getDatetimeTo();
-        }
-
-        Duration workingDuration = Duration.between(start, end);
-        if (workingDuration.compareTo(washTypeDuration) >= 0) {
-            offer.setDuration(washTypeDuration);
-            offer.setTimeFrom(start);
-            offer.setTimeTo(start.plus(washTypeDuration));
-            offer.setBox(box);
-        }
-
-        return offer;
+    /*
+    ToDo добавить расчет выручки за период, переименовать метод ниже
+     */
+    public BigDecimal getAccounting() {
+        return bookingRepository.getMoneyAmount();
     }
 
 }

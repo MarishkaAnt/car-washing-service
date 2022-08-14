@@ -11,32 +11,22 @@ import java.time.LocalTime;
 public class BoxSpecification {
 
     public static Specification<Box> hasId(Integer id){
-        if (id == null || id <= 0) {
-            return null;
-        }
-        return (root, query, cb) -> cb.equal(root.get("id"), id);
+        return id != null && id > 0 ?
+                (root, query, cb) -> cb.equal(root.<Integer>get("id"), id) : null;
     }
 
-    public static Specification<Box> hasBoxType(BoxType boxType){
-        if (boxType == null) {
-            return null;
-        }
-        return (root, query, cb) -> cb.equal(root.get("boxType"), boxType);
-
+    public static Specification<Box> hasBoxTypeId(Integer boxTypeId){
+        return boxTypeId == null?
+                null : (root, query, cb) -> cb.equal(root.<Integer>get("boxType").get("id"), boxTypeId);
     }
 
     public static Specification<Box> hasOpenTime(LocalTime openTime){
-        if (openTime == null) {
-            return null;
-        }
-        return (root, query, cb) -> cb.equal(root.get("openTime"), openTime);
-
+        return openTime == null ?
+            null : (root, query, cb) -> cb.equal(root.<LocalTime>get("openTime"), openTime);
     }
-    public static Specification<Box> hasCloseTime(LocalTime closeTime){
-        if (closeTime == null) {
-            return null;
-        }
-        return (root, query, cb) -> cb.equal(root.get("closeTime"), closeTime);
 
+    public static Specification<Box> hasCloseTime(LocalTime closeTime){
+        return closeTime == null ?
+                null : (root, query, cb) -> cb.equal(root.<LocalTime>get("closeTime"), closeTime);
     }
 }

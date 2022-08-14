@@ -1,6 +1,7 @@
 package org.philosophy.carwashing.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.philosophy.carwashing.auth.filter.CustomAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,14 +32,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+/*
         CustomAuthenticationFilter customAuthenticationFilter =
                 new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
+*/
+        http.cors().disable();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/swagger-ui/**",
-                "/swagger-ui.html", "/api/v1/login/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/user").permitAll();
+        http.authorizeRequests().anyRequest().permitAll();
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+/*
+        http.authorizeRequests().antMatchers("/api/v1/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/v1/**").permitAll();
+        http.addFilter(customAuthenticationFilter);
         http.authorizeRequests().antMatchers("/api/v1/**").authenticated()
                 .and()
                 .formLogin()
@@ -49,11 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .logout()
-                .logoutSuccessUrl("/api/v1/users")
                 .deleteCookies("JSESSIONID");
+*/
 
-        //http.authorizeRequests().antMatchers("/api/v1/**").authenticated();
-        http.addFilter(customAuthenticationFilter);
     }
 
     @Bean

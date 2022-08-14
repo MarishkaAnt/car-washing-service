@@ -10,7 +10,6 @@ import org.philosophy.carwashing.model.*;
 import org.philosophy.carwashing.repository.BookingRepository;
 import org.philosophy.carwashing.repository.UserRepository;
 import org.philosophy.carwashing.util.Discounter;
-import org.philosophy.carwashing.util.Offer;
 import org.philosophy.carwashing.validator.ParameterValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +21,7 @@ import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 
 import static org.philosophy.carwashing.util.CommonStringConstants.BOOKING_NOT_FOUND_MESSAGE;
+import static org.philosophy.carwashing.util.CommonStringConstants.USER_NOT_FOUND_MESSAGE;
 
 /**
  * Сервис для работы с бронью
@@ -49,16 +49,15 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
         Booking booking = bookingRequestMapper.toEntity(dto);
         Integer requestedBoxId = dto.getBoxId();
 
-        Offer foundedOffer = offerService.generateOffer(booking, requestedBoxId);
-        booking.setStatus(BookingStatuses.NEW);
-        booking.setBox(foundedOffer.getBox());
-        booking.setDatetimeFrom(foundedOffer.getTimeFrom());
-        booking.setDatetimeTo(foundedOffer.getTimeTo());
-
-        BigDecimal totalCost = getTotalCost(booking);
-        booking.setTotalCost(totalCost);
-        booking.setIsPaid(false);
-        Booking saved = bookingRepository.save(booking);
+        Booking updatedBooking = offerService.applyBestOfferByParameters(booking, requestedBoxId);
+        updatedBooking.setStatus(BookingStatuses.NEW);
+        User user = userRepository.findById(booking.getUser().getId())
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND_MESSAGE));
+        updatedBooking.setUser(user);
+        BigDecimal totalCost = getTotalCost(updatedBooking);
+        updatedBooking.setTotalCost(totalCost);
+        updatedBooking.setIsPaid(false);
+        Booking saved = bookingRepository.save(updatedBooking);
         return bookingResponseMapper.toDto(saved);
     }
 
@@ -134,8 +133,7 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
         BigDecimal washTypeCost = booking.getWashType().getCost();
         Integer washTypeDiscountAmount = booking.getWashType().getDiscountAmount();
         Integer boxDiscountAmount = booking.getBox().getDiscountAmount();
-        Integer userDiscountAmount = userRepository.findById(booking.getUser().getId())
-                .map(Discountable::getDiscountAmount).orElse(0);
+        Integer userDiscountAmount = booking.getUser().getDiscountAmount();
         totalCost = Discounter.applyDiscount(washTypeCost, washTypeDiscountAmount);
         totalCost = Discounter.applyDiscount(totalCost, boxDiscountAmount);
         totalCost = Discounter.applyDiscount(totalCost, userDiscountAmount);

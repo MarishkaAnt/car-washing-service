@@ -23,7 +23,6 @@ public class UserController {
         return ResponseEntity.ok().body(dtos);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<UserViewResponseDto> getById(@PathVariable Integer id){
         UserViewResponseDto responseDto = userService.findById(id);
@@ -55,7 +54,4 @@ public class UserController {
         UserViewResponseDto responseDto = userService.changeRole(id, Roles.valueOf(role));
         return ResponseEntity.ok().body(responseDto);
     }
-
-
-
 }

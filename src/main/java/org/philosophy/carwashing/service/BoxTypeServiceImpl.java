@@ -42,7 +42,4 @@ public class BoxTypeServiceImpl implements GenericService<Integer, BoxTypeRespon
         return null;
     }
 
-    public Page<BoxResponseDto> findAll(Specification<Box> specification, Pageable pageable) {
-        return null;
-    }
 }

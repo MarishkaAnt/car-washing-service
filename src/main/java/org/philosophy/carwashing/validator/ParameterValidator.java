@@ -2,6 +2,11 @@ package org.philosophy.carwashing.validator;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * Валидатор DTO и id
+ * @param <D> - принимает DTO для проверки на null
+ * @Throws IllegalArgumentException
+ */
 @Component
 public class ParameterValidator<D> {
 

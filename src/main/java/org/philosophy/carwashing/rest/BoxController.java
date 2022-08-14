@@ -1,6 +1,5 @@
 package org.philosophy.carwashing.rest;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.philosophy.carwashing.common.BoxFilter;
 import org.philosophy.carwashing.dto.requestdto.BoxRequestDto;
@@ -10,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 
 @RestController
@@ -24,7 +25,6 @@ public class BoxController {
         Page<BoxResponseDto> dtos = boxService.findAll(filter.toSpecification(), pageable);
         return ResponseEntity.ok().body(dtos);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<BoxResponseDto> getById(@PathVariable Integer id){
@@ -53,5 +53,11 @@ public class BoxController {
         return ResponseEntity.ok().body(responseDto);
     }
 
+    @PutMapping("/{id}/set-discount")
+    //@Secured(ROLE_ADMIN)
+    public ResponseEntity<BoxResponseDto> setDiscount(@RequestParam @Valid Integer discount, @PathVariable Integer id) {
+        BoxResponseDto response = boxService.setDiscountAmount(discount, id);
+        return ResponseEntity.ok().build();
+    }
 
 }

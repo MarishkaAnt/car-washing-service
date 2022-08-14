@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import static org.philosophy.carwashing.util.CommonStringConstants.BOOKING_NOT_FOUND_MESSAGE;
 import static org.philosophy.carwashing.util.CommonStringConstants.USER_NOT_FOUND_MESSAGE;
@@ -100,22 +101,23 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
      * @return - возвращает измененную бронь
      */
     @Override
+    @Transactional
     public BookingResponseDto update(Integer id, BookingRequestDto dto) {
         validator.validateIdIsNullOrNegative(id);
         Booking founded = bookingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(BOOKING_NOT_FOUND_MESSAGE));
         founded.setStatus(BookingStatuses.CANCELLED);
-        bookingRepository.save(founded);
         if (dto.getDatetimeFrom() == null && dto.getDatetimeTo() == null) {
             dto.setDatetimeFrom(founded.getDatetimeFrom());
             dto.setDatetimeTo(founded.getDatetimeTo());
         }
-        if (dto.getWashTypeId() != null) {
-            founded.setWashType(WashType.builder().id(dto.getWashTypeId()).build());
+        if (dto.getWashTypeId() == null) {
+            dto.setWashTypeId(founded.getWashType().getId());
         }
-        if (dto.getBoxId() != null) {
-            founded.setBox(Box.builder().id(dto.getBoxId()).build());
+        if (dto.getBoxId() == null) {
+            dto.setBoxId(founded.getBox().getId());
         }
+        bookingRepository.saveAndFlush(founded);
         return create(dto);
     }
 
@@ -124,7 +126,7 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
         Booking founded = bookingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(BOOKING_NOT_FOUND_MESSAGE));
         founded.setStatus(status);
-        Booking saved = bookingRepository.save(founded);
+        Booking saved = bookingRepository.saveAndFlush(founded);
         return bookingResponseMapper.toDto(saved);
     }
 
@@ -147,6 +149,16 @@ public class BookingServiceImpl implements GenericService<Integer, BookingRespon
         return bookingRepository.getMoneyAmount();
     }
 
+    public BookingResponseDto pay(Integer id) {
+        validator.validateIdIsNullOrNegative(id);
+        Booking founded = bookingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(BOOKING_NOT_FOUND_MESSAGE));
+        founded.setStatus(BookingStatuses.PAID);
+        founded.setIsPaid(true);
+        founded.setPaymentTime(LocalDateTime.now());
+        Booking saved = bookingRepository.saveAndFlush(founded);
+        return bookingResponseMapper.toDto(saved);
+    }
 }
 
 

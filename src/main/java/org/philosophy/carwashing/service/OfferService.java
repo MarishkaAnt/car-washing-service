@@ -99,7 +99,8 @@ public class OfferService {
                 (long) (requestedWashTypeDuration.toMillis() * speedCoefficient),
                 ChronoUnit.MILLIS);
 
-        List<BookingStatuses> statuses = List.of(BookingStatuses.CANCELLED, BookingStatuses.DELETED);
+        List<BookingStatuses> statuses = List.of(BookingStatuses.NEW,
+                BookingStatuses.ADMITTED);
         List<Booking> bookings = bookingRepository
                 .findAllByRequestAndBox(requestedDatetimeFrom, requestedDatetimeTo, statuses, box.getId());
 
@@ -123,8 +124,8 @@ public class OfferService {
             offer.setTimeFrom(start);
             offer.setTimeTo(start.plus(requestedWashTypeDuration));
             offer.setBox(box);
+            return offer;
         }
-
-        return offer;
+        throw  new EntityNotFoundException(NOTING_FOUND);
     }
 }

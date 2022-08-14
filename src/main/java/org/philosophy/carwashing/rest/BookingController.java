@@ -60,10 +60,18 @@ public class BookingController {
     }
 
     @PutMapping("/{id}/change-status")
-    @Secured("ROLE_ADMIN")
-    public ResponseEntity<BookingResponseDto> changeStatus(@PathVariable Integer id, @RequestBody String status) {
+    //@Secured("ROLE_ADMIN")
+    public ResponseEntity<BookingResponseDto> changeStatus(@PathVariable Integer id, @RequestParam String status) {
         BookingResponseDto responseDto = bookingServiceImpl.changeStatus(id, BookingStatuses.valueOf(status));
         return ResponseEntity.ok().body(responseDto);
     }
+
+    @PutMapping("/{id}/pay")
+    //@Secured("ROLE_ADMIN")
+    public ResponseEntity<BookingResponseDto> pay(@PathVariable Integer id) {
+        BookingResponseDto responseDto = bookingServiceImpl.pay(id);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
 
 }

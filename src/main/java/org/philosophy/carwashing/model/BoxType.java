@@ -20,6 +20,7 @@ public class BoxType {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "type_name")
     private BoxTypes type;
 
     @Column(name = "speedcoefficient")

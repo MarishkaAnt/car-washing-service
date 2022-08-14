@@ -13,9 +13,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+#  security:
+#    user:
+#      name: user
+#      password: pass777!!
+#      roles: ANONYMOUS
 logging:
   level:
     org:
       hibernate:
         SQL: INFO
+secret: secretnysecret

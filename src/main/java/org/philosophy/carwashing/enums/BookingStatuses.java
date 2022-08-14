@@ -13,6 +13,10 @@ public enum BookingStatuses {
      */
     ADMITTED,
     /**
+     * Оплаченная бронь
+     */
+    PAID,
+    /**
      * Отмененная клиентом бронь
      */
     CANCELLED,

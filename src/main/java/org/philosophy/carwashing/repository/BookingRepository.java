@@ -21,7 +21,7 @@ public interface BookingRepository extends JpaRepository<Booking,Integer> {
             "from Booking as b " +
             "where b.datetimeFrom >= ?1" +
             "  and b.datetimeTo <= ?2 " +
-            "  and  b.status not in (?3) " +
+            "  and  b.status in (?3) " +
             "  and b.box.id = ?4 " +
             "order by b.datetimeFrom asc")
     List<Booking> findAllByRequestAndBox(
@@ -30,7 +30,7 @@ public interface BookingRepository extends JpaRepository<Booking,Integer> {
 
     @Query(nativeQuery = true,
     value = "select sum(total_cost) as total_money_amount " +
-            "from bookings where status = 'ADMITTED' and is_paid = true  " +
-            "group by total_cost")
+            "from bookings where status = 'PAID' and is_paid = true  " +
+            "group by status")
     BigDecimal getMoneyAmount();
 }

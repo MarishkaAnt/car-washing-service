@@ -15,4 +15,10 @@ public class CommonStringConstants {
     public static final String NOTING_FOUND = "По вашему запросу ничего не найдено, измените параметры поиска";
     public static final int MAX_PERCENT_VALUE = 100;
     public static final int MIN_PERCENT_VALUE = 0;
+    public static final String ACCESS_TOKEN = "access_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String ROLES = "roles";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+
 }

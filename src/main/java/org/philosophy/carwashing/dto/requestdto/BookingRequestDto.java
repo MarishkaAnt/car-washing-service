@@ -2,8 +2,10 @@ package org.philosophy.carwashing.dto.requestdto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 /**
- * Dto брони создается после того, как пользователь получит RequestResponseDto
+ * Dto брони
  */
 @Getter
 @Setter
@@ -13,6 +15,10 @@ import lombok.*;
 @EqualsAndHashCode
 public class BookingRequestDto {
 
-    private Integer requestId;
+    private Integer washTypeId;
     private Integer boxId;
+    private Integer userId;
+    private LocalDateTime datetimeFrom;
+    private LocalDateTime datetimeTo;
+
 }

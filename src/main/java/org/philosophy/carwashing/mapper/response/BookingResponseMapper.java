@@ -13,6 +13,6 @@ import org.philosophy.carwashing.model.Booking;
 public interface BookingResponseMapper extends
         GenericResponseMapper<Booking, BookingResponseDto> {
 
-    @Mapping(target="requestId", source="request.id")
+    @Mapping(target="userId", source="user.id")
     BookingResponseDto toDto(Booking booking);
 }

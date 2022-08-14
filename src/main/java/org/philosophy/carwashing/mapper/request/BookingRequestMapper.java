@@ -13,8 +13,9 @@ import org.philosophy.carwashing.model.Booking;
 public interface BookingRequestMapper extends
         GenericRequestMapper<Booking, BookingRequestDto> {
 
-    @Mapping(target="request.id", source="requestId")
+    @Mapping(target = "washType.id", source = "washTypeId")
     @Mapping(target="box.id", source="boxId")
+    @Mapping(target="user.id", source="userId")
     Booking toEntity(BookingRequestDto dto);
 
 }

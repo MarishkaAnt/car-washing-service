@@ -14,6 +14,6 @@ import lombok.*;
 public abstract class DiscountableDto {
 
     protected Boolean hasDiscount;
-    protected Double discountAmount;
+    protected Integer discountAmount;
 
 }

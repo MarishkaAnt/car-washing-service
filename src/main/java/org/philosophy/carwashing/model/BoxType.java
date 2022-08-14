@@ -16,11 +16,13 @@ public class BoxType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @Enumerated(EnumType.STRING)
     private BoxTypes type;
 
-    private Double speedcoefficient;
+    @Column(name = "speedcoefficient")
+    private Double speedCoefficient;
 
 }

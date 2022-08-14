@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "discount_constrains_settings")
+@Table(name = "discount_settings")
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -17,7 +17,10 @@ public class DiscountSettings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Double maxValue;
-    private Double minValue;
+    @Column(name = "max_value")
+    private Integer maxValue;
+
+    @Column(name = "min_value")
+    private Integer minValue;
 
 }

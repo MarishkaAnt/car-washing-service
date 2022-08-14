@@ -1,5 +1,6 @@
 package org.philosophy.carwashing.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -22,9 +23,16 @@ public class Box extends Discountable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne()
+    @ManyToOne()
     @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "box_type_id")
     private BoxType boxType;
+
+    @Column(name = "open_time")
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime openTime;
+
+    @Column(name = "close_time")
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime closeTime;
 }

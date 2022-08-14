@@ -6,9 +6,8 @@ import org.hibernate.annotations.TypeDef;
 import org.philosophy.carwashing.enums.WashTypes;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.Period;
 
 @Entity
 @Table(name = "wash_types")
@@ -27,12 +26,16 @@ public class WashType extends Discountable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "wash_type_name")
     private WashTypes name;
 
+    @Column(name = "duration")
     private Duration duration;
 
-    private Double cost;
+    @Column(name = "wash_cost")
+    private BigDecimal cost;
 }

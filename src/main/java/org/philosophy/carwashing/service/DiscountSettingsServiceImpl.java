@@ -1,81 +1,40 @@
 package org.philosophy.carwashing.service;
 
 import lombok.RequiredArgsConstructor;
-import org.philosophy.carwashing.dto.requestdto.DiscountSettingsRequestDto;
-import org.philosophy.carwashing.dto.responsedto.BoxResponseDto;
 import org.philosophy.carwashing.dto.responsedto.DiscountSettingsResponseDto;
-import org.philosophy.carwashing.mapper.request.DiscountSettingsRequestMapper;
 import org.philosophy.carwashing.mapper.response.DiscountSettingsResponseMapper;
-import org.philosophy.carwashing.model.DiscountSettings;
 import org.philosophy.carwashing.repository.DiscountSettingsRepository;
-import org.philosophy.carwashing.validator.ParameterValidator;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.philosophy.carwashing.util.CommonStringConstants;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.philosophy.carwashing.util.CommonStringConstants.*;
+
 @Service
+@Validated
 @RequiredArgsConstructor
-public class DiscountSettingsServiceImpl implements GenericService<Integer,
-        DiscountSettingsResponseDto, DiscountSettingsRequestDto> {
+public class DiscountSettingsServiceImpl {
 
     private final DiscountSettingsRepository discountSettingsRepository;
     private final DiscountSettingsResponseMapper discountSettingsResponseMapper;
-    private final DiscountSettingsRequestMapper discountSettingsRequestMapper;
-    private final ParameterValidator<DiscountSettingsRequestDto> validator;
 
-    public BoxResponseDto setMax(Integer id, Double newMaxValue) {
-        return null;
+    public Integer setMax(@Min(MIN_PERCENT_VALUE) @Max(MAX_PERCENT_VALUE) Integer newMaxValue) {
+        return discountSettingsRepository.setMaxValue(newMaxValue);
     }
 
-    public BoxResponseDto setMin(Integer id, Double newMinValue) {
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public DiscountSettingsResponseDto create(DiscountSettingsRequestDto dto) {
-        validator.validateDtoNotNull(dto);
-        DiscountSettings discountSettings = discountSettingsRequestMapper.toEntity(dto);
-        DiscountSettings saved = discountSettingsRepository.save(discountSettings);
-        return discountSettingsResponseMapper.toDto(saved);
-    }
-
-    public void deleteById(Integer id) {
-        validator.validateIdIsNullOrNegative(id);
-        discountSettingsRepository.deleteById(id);
-    }
-
-    @Override
-    public DiscountSettingsResponseDto findById(Integer id) {
-        validator.validateIdIsNullOrNegative(id);
-        return discountSettingsRepository.findById(id)
-                .map(discountSettingsResponseMapper::toDto)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
-
-    @Override
-    public Page<DiscountSettingsResponseDto> findAll(Pageable pageable) {
-        return discountSettingsRepository.findAll(pageable)
-                .map(discountSettingsResponseMapper::toDto);
-    }
-
-    @Override
-    public DiscountSettingsResponseDto update(Integer integer, DiscountSettingsRequestDto dto) {
-        return null;
+    public Integer setMin(@Min(MIN_PERCENT_VALUE) @Max(MAX_PERCENT_VALUE) Integer newMinValue) {
+        return discountSettingsRepository.setMinValue(newMinValue);
     }
 
     public List<DiscountSettingsResponseDto> findAll(){
-        List<DiscountSettings> discounts = discountSettingsRepository.findAll();
-        return discounts.stream()
-                .map(discountSettingsResponseMapper::toDto)
+        return discountSettingsRepository.findAll()
+                .stream().map(discountSettingsResponseMapper::toDto)
                 .collect(Collectors.toList());
-
     }
 
 }

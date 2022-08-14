@@ -3,10 +3,10 @@ package org.philosophy.carwashing.util;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class Discounter {
+import static org.philosophy.carwashing.util.CommonStringConstants.MAX_PERCENT_VALUE;
+import static org.philosophy.carwashing.util.CommonStringConstants.MIN_PERCENT_VALUE;
 
-    public static final int MAX_PERCENT_VALUE = 100;
-    public static final int MIN_PERCENT_VALUE = 0;
+public class Discounter {
 
     public static BigDecimal applyDiscount(BigDecimal cost, Integer discountAmount){
         return discountAmount == MIN_PERCENT_VALUE ? cost :

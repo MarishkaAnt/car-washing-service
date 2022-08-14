@@ -17,7 +17,7 @@ spring:
     user:
       name: user
       password: pass777!!
-      roles: USER
+      roles: ANONYMOUS
 logging:
   level:
     org:

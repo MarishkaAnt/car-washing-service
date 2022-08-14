@@ -1,6 +1,5 @@
 package org.philosophy.carwashing.auth;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,14 +42,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/v1/**").authenticated()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/api/v1", true)
+                .defaultSuccessUrl("/api/v1/wash-types", true)
                 .permitAll()
                 .and()
                 .httpBasic()
                 .and()
                 .csrf().disable()
                 .logout()
-                .logoutSuccessUrl("/api/v1/user");
+                .logoutSuccessUrl("/api/v1/users")
+                .deleteCookies("JSESSIONID");
 
         //http.authorizeRequests().antMatchers("/api/v1/**").authenticated();
         http.addFilter(customAuthenticationFilter);

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/boxes")
@@ -33,31 +32,27 @@ public class BoxController {
     }
 
     @PostMapping
-    //@Secured(ROLE_ADMIN)
     public ResponseEntity<BoxResponseDto> create(@RequestBody BoxRequestDto request) {
         BoxResponseDto responseDto = boxService.create(request);
         return ResponseEntity.ok().body(responseDto);
     }
 
     @DeleteMapping("/{id}")
-    //@Secured(ROLE_ADMIN)
     public ResponseEntity<?> deleteById(@PathVariable Integer id){
         boxService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    //@Secured(ROLE_ADMIN)
     public ResponseEntity<BoxResponseDto> update(@RequestBody BoxRequestDto dto, @PathVariable Integer id) {
         BoxResponseDto responseDto = boxService.update(id, dto);
         return ResponseEntity.ok().body(responseDto);
     }
 
     @PutMapping("/{id}/set-discount")
-    //@Secured(ROLE_ADMIN)
     public ResponseEntity<BoxResponseDto> setDiscount(@RequestParam @Valid Integer discount, @PathVariable Integer id) {
         BoxResponseDto response = boxService.setDiscountAmount(discount, id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(response);
     }
 
 }

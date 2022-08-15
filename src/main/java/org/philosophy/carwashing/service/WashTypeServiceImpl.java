@@ -3,6 +3,7 @@ package org.philosophy.carwashing.service;
 import lombok.RequiredArgsConstructor;
 import org.philosophy.carwashing.dto.requestdto.WashTypeRequestDto;
 import org.philosophy.carwashing.dto.responsedto.WashTypeResponseDto;
+import org.philosophy.carwashing.enums.WashTypes;
 import org.philosophy.carwashing.mapper.request.WashTypeRequestMapper;
 import org.philosophy.carwashing.mapper.response.WashTypeResponseMapper;
 import org.philosophy.carwashing.model.WashType;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+
+import static org.philosophy.carwashing.util.CommonStringConstants.WASH_TYPE_NOT_FOUND_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +46,7 @@ public class WashTypeServiceImpl implements GenericService<Integer,
         validator.validateIdIsNullOrNegative(id);
         return washTypeRepository.findById(id)
                 .map(washTypeResponseMapper::toDto)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(WASH_TYPE_NOT_FOUND_MESSAGE));
     }
 
     @Override
@@ -51,11 +54,16 @@ public class WashTypeServiceImpl implements GenericService<Integer,
         return washTypeRepository.findAll(pageable)
                 .map(washTypeResponseMapper::toDto);
     }
-/*
-ToDo
- */
+
     @Override
-    public WashTypeResponseDto update(Integer integer, WashTypeRequestDto dto) {
-        return null;
+    public WashTypeResponseDto update(Integer id, WashTypeRequestDto dto) {
+        WashType washType = washTypeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(WASH_TYPE_NOT_FOUND_MESSAGE));
+        washType.setName(WashTypes.valueOf(dto.getName()));
+        washType.setCost(dto.getCost());
+        washType.setDuration(dto.getDuration());
+
+        WashType saved = washTypeRepository.save(washType);
+        return washTypeResponseMapper.toDto(saved);
     }
 }

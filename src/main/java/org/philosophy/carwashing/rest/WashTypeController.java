@@ -1,6 +1,5 @@
 package org.philosophy.carwashing.rest;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.philosophy.carwashing.dto.requestdto.WashTypeRequestDto;
 import org.philosophy.carwashing.dto.responsedto.WashTypeResponseDto;
@@ -40,6 +39,13 @@ public class WashTypeController {
     public ResponseEntity<?> deleteById(@PathVariable Integer id){
         washTypeService.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<WashTypeResponseDto> update(@PathVariable Integer id,
+                                                      @RequestBody WashTypeRequestDto dto) {
+        WashTypeResponseDto response = washTypeService.update(id, dto);
+        return ResponseEntity.ok().body(response);
     }
 
 }

@@ -20,5 +20,7 @@ public class CommonStringConstants {
     public static final String ROLES = "roles";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String SECRET = "secretnysecret";
+
 
 }

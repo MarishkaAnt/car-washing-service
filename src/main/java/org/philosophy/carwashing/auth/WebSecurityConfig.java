@@ -43,22 +43,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         //http.authorizeRequests().anyRequest().permitAll();
-        //http.addFilter(new JWTAuthenticationFilter(authenticationManagerBean()));
 
         http.authorizeRequests().antMatchers("/api/v1/login").permitAll();
         //http.authorizeRequests().antMatchers("/api/v1/**").permitAll();
-        //http.addFilter(jwtAuthenticationFilter);
-        //http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests().antMatchers("/api/v1/**").authenticated()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/api/v1/wash-types", true)
+                .defaultSuccessUrl("/api/v1", true)
                 .permitAll()
                 .and()
                 .httpBasic()
                 .and()
                 .logout()
                 .deleteCookies("JSESSIONID");
+        http.addFilter(jwtAuthenticationFilter);
+        //http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 

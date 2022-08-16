@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.philosophy.carwashing.dto.responsedto.DiscountSettingsResponseDto;
 import org.philosophy.carwashing.service.DiscountSettingsServiceImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,8 +24,7 @@ public class DiscountSettingsController {
     }
 
     @PostMapping("/set-max-value")
-    //@Secured(ROLE_ADMIN)
-    public ResponseEntity<Void> setMaxValue(@RequestParam @Valid Integer newMaxValue) {
+    public ResponseEntity<Void> setMaxValue(@RequestBody @Valid Integer newMaxValue) {
         Integer response = discountSettingsService.setMax(newMaxValue);
         if (response != 1) {
             return ResponseEntity.badRequest().build();
@@ -33,8 +33,7 @@ public class DiscountSettingsController {
     }
 
     @PostMapping("/set-min-value")
-    //@Secured(ROLE_ADMIN)
-    public ResponseEntity<Void> setMinValue(@RequestParam @Valid Integer newMinValue) {
+    public ResponseEntity<Void> setMinValue(@RequestBody @Valid Integer newMinValue) {
         Integer response = discountSettingsService.setMin(newMinValue);
         if (response != 1) {
             return ResponseEntity.badRequest().build();

@@ -5,8 +5,8 @@ import org.philosophy.carwashing.auth.filter.JWTAuthenticationFilter;
 import org.philosophy.carwashing.auth.filter.JWTAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +21,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -37,19 +37,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         JWTAuthenticationFilter jwtAuthenticationFilter =
                 new JWTAuthenticationFilter(authenticationManagerBean());
-        jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
+        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         http.cors().disable();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         //http.authorizeRequests().anyRequest().permitAll();
 
-        http.authorizeRequests().antMatchers("/api/v1/login").permitAll();
-        //http.authorizeRequests().antMatchers("/api/v1/**").permitAll();
+        http.authorizeRequests().antMatchers("/login").permitAll();
+/*
+
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/boxes/**")
+                .authenticated();
+//                .hasAuthority("USER");
+        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/v1/boxes/**")
+                .authenticated();
+//                  .hasRole("ADMIN");
+*/
+
+        http.authorizeRequests().antMatchers("api/v1/discounts")
+//                .hasRole("ADMIN");
+                .hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/api/v1/**").authenticated()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/api/v1", true)
                 .permitAll()
                 .and()
                 .httpBasic()
@@ -57,13 +68,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .deleteCookies("JSESSIONID");
         http.addFilter(jwtAuthenticationFilter);
-        //http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 

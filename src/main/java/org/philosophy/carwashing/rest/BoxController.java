@@ -8,6 +8,7 @@ import org.philosophy.carwashing.service.BoxServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,25 +33,29 @@ public class BoxController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BoxResponseDto> create(@RequestBody BoxRequestDto request) {
         BoxResponseDto responseDto = boxService.create(request);
         return ResponseEntity.ok().body(responseDto);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable Integer id){
         boxService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<BoxResponseDto> update(@RequestBody BoxRequestDto dto, @PathVariable Integer id) {
         BoxResponseDto responseDto = boxService.update(id, dto);
         return ResponseEntity.ok().body(responseDto);
     }
 
     @PutMapping("/{id}/set-discount")
-    public ResponseEntity<BoxResponseDto> setDiscount(@RequestParam @Valid Integer discount, @PathVariable Integer id) {
+    @PreAuthorize("hasRole('ADMIN') || hasRole('OPERATOR')")
+    public ResponseEntity<BoxResponseDto> setDiscount(@RequestBody @Valid Integer discount, @PathVariable Integer id) {
         BoxResponseDto response = boxService.setDiscountAmount(discount, id);
         return ResponseEntity.ok().body(response);
     }

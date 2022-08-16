@@ -20,11 +20,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-import static org.philosophy.carwashing.util.CommonStringConstants.*;
+import static org.philosophy.carwashing.util.CommonStringConstants.USERNAME;
+import static org.philosophy.carwashing.util.CommonStringConstants.PASSWORD;
+import static org.philosophy.carwashing.util.CommonStringConstants.ACCESS_TOKEN;
+import static org.philosophy.carwashing.util.CommonStringConstants.REFRESH_TOKEN;
+import static org.philosophy.carwashing.util.CommonStringConstants.ROLES;
+import static org.philosophy.carwashing.util.CommonStringConstants.SECRET;
+
 
 @Slf4j
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+    public static final int SECONDS_IN_MINUTE = 60;
+    public static final int MILLIS_IN_SECOND = 1000;
 
 /*
     @Value("${secret}")
@@ -49,7 +58,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes(StandardCharsets.UTF_8));
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * SECONDS_IN_MINUTE * MILLIS_IN_SECOND))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim(ROLES, user.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
@@ -57,7 +66,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(algorithm);
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 50 * SECONDS_IN_MINUTE * MILLIS_IN_SECOND))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         response.setHeader(ACCESS_TOKEN, access_token);

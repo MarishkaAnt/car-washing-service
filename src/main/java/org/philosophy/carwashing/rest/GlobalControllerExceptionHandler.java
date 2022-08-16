@@ -1,5 +1,6 @@
 package org.philosophy.carwashing.rest;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {EntityNotFoundException.class, EmptyResultDataAccessException.class})
     public ResponseEntity<String> handleEntityNotFound(Exception e) {
-    return ResponseEntity.badRequest().body(ENTITY_NOT_FOUND_MESSAGE + e.getMessage());
+        return ResponseEntity.badRequest().body(ENTITY_NOT_FOUND_MESSAGE + e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -32,6 +33,13 @@ class GlobalControllerExceptionHandler {
     public ResponseEntity<String> handleConstraintViolation(Exception e) {
         return ResponseEntity.badRequest().body(VALIDATION_FAILED + e.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = TokenExpiredException.class)
+    public ResponseEntity<String> handleTokenExpired(Exception e) {
+        return ResponseEntity.badRequest().body(TOKEN_EXPIRED_EXCEPTION_MESSAGE + e.getMessage());
+    }
+
 
 
 }

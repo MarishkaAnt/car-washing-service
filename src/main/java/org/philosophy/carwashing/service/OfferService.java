@@ -10,6 +10,7 @@ import org.philosophy.carwashing.repository.BookingRepository;
 import org.philosophy.carwashing.repository.BoxRepository;
 import org.philosophy.carwashing.repository.BoxTypeRepository;
 import org.philosophy.carwashing.repository.WashTypeRepository;
+import org.philosophy.carwashing.util.CommonStringConstants;
 import org.philosophy.carwashing.util.Offer;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,6 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.philosophy.carwashing.util.CommonStringConstants.*;
 
 /**
  * сервис для автоматического создания бронирования
@@ -48,9 +47,9 @@ public class OfferService {
 
         if (boxId != null && boxId > 0) {
             box = boxRepository.findById(boxId)
-                    .orElseThrow(() -> new EntityNotFoundException(BOX_NOT_FOUND_MESSAGE));
+                    .orElseThrow(() -> new EntityNotFoundException(CommonStringConstants.BOX_NOT_FOUND_MESSAGE));
         }
-        if (box != null && box.getId() !=null) {
+        if (box != null && box.getId() != null) {
             foundedOffer = generateOfferByBox(booking, box);
         } else {
             List<Box> boxes = boxRepository.findAllOrderById();
@@ -62,7 +61,7 @@ public class OfferService {
                     .filter(offer -> offer.getDuration() != null && offer.getTimeFrom() != null &&
                             offer.getTimeTo() != null && offer.getBox() != null)
                     .findFirst()
-                    .orElseThrow(() -> new EntityNotFoundException(NOTING_FOUND));
+                    .orElseThrow(() -> new EntityNotFoundException(CommonStringConstants.NOTING_FOUND));
         }
         booking.setBox(foundedOffer.getBox());
         booking.setDatetimeFrom(foundedOffer.getTimeFrom());
@@ -75,10 +74,10 @@ public class OfferService {
         LocalTime openTime = box.getOpenTime();
         LocalTime closeTime = box.getCloseTime();
         WashType washType = washTypeRepository.findById(booking.getWashType().getId())
-                .orElseThrow(() -> new EntityNotFoundException(WASH_TYPE_NOT_FOUND_MESSAGE));
+                .orElseThrow(() -> new EntityNotFoundException(CommonStringConstants.WASH_TYPE_NOT_FOUND_MESSAGE));
         booking.setWashType(washType);
         BoxType boxType = boxTypeRepository.findById(box.getBoxType().getId())
-                .orElseThrow(() -> new EntityNotFoundException(BOX_TYPE_NOT_FOUND_MESSAGE));
+                .orElseThrow(() -> new EntityNotFoundException(CommonStringConstants.BOX_TYPE_NOT_FOUND_MESSAGE));
         Duration requestedWashTypeDuration = washType.getDuration();
         Double speedCoefficient = boxType.getSpeedCoefficient();
 
@@ -88,11 +87,11 @@ public class OfferService {
         }
         LocalDateTime requestedDatetimeTo = booking.getDatetimeTo() == null ? null :
                 booking.getDatetimeTo();
-        if (requestedDatetimeTo == null || closeTime.isBefore(requestedDatetimeTo.toLocalTime())){
+        if (requestedDatetimeTo == null || closeTime.isBefore(requestedDatetimeTo.toLocalTime())) {
             requestedDatetimeTo = LocalDateTime.of(requestedDatetimeFrom.toLocalDate(), closeTime);
         }
-        if( requestedDatetimeTo.isBefore(requestedDatetimeFrom)){
-            throw new IllegalArgumentException(WRONG_DATE_SEQUENCE);
+        if (requestedDatetimeTo.isBefore(requestedDatetimeFrom)) {
+            throw new IllegalArgumentException(CommonStringConstants.WRONG_DATE_SEQUENCE);
         }
 
         requestedWashTypeDuration = Duration.of(
@@ -126,6 +125,6 @@ public class OfferService {
             offer.setBox(box);
             return offer;
         }
-        throw  new EntityNotFoundException(NOTING_FOUND);
+        throw new EntityNotFoundException(CommonStringConstants.NOTING_FOUND);
     }
 }

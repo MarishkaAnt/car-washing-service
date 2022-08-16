@@ -17,10 +17,12 @@ spring:
     user:
       name: user
       password: pass777!!
-      roles: ANONYMOUS
+#      roles: ROLE_OPERATOR
 logging:
   level:
     org:
       hibernate:
         SQL: INFO
+      springframework:
+        security: DEBUG
 #secret: secretnysecret
